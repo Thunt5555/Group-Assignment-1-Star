@@ -10,7 +10,7 @@ Interview: went well, we have a massive amount of stories to pull from.
 # Group Assignment 2
 
 # Latex
-https://www.overleaf.com/2538593742hgqfpfhvkcvj#c3baba
+
 # UML
 https://drive.google.com/file/d/1GHsQaUt5WDshHo62uxi4sFU7EEnwGTex/view?usp=sharing
 # Mockup Sketches (Rough)
