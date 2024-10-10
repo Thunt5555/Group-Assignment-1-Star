@@ -12,7 +12,7 @@ Interview: went well, we have a massive amount of stories to pull from.
 # Latex
 https://www.overleaf.com/2538593742hgqfpfhvkcvj#c3baba
 
-[Uplo\documentclass{article}
+documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{titling}
 \title{Team Star Project \\ \large Architecture Design and UI}
@@ -68,7 +68,7 @@ https://www.overleaf.com/2538593742hgqfpfhvkcvj#c3baba
 \subsection{We emphasize thorough documentation for every code commit, detailing the purpose and functional changes made. This practice will ensure that all team members remain informed about modifications to functions or classes, fostering collaboration and understanding.}
 
 \end{document}
-ading main (1).tex…]()
+
 
 
 # UML
