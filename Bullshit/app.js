@@ -1,6 +1,6 @@
 // Import Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -65,3 +65,21 @@ function signIn(event) {
 
 // Attach the event listener to the form
 document.getElementById('signInForm').addEventListener('submit', signIn);
+
+function signInGuest(event) {
+  event.preventDefault();
+
+  signInAnonymously(auth)
+    .then(() => {
+      // Signed in..
+      alert("Guest user signed in successfully");
+
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ...
+    });
+}
+
+document.getElementById('guestButton').addEventListener('click', signInGuest);
