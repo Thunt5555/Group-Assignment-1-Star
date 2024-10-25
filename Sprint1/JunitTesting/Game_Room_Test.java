@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class Game_Room_Test {
 
     @Test
-    public void Game_Room_Deal(){
+    public void Game_Room_Deal2(){
         Game_Room temproom = new Game_Room();
         temproom.Current_Players.add(new Player("Terry"));
         temproom.Current_Players.add(new Player("Larry"));
@@ -22,7 +22,7 @@ public class Game_Room_Test {
     }
 
     @Test
-    public void Game_Room_Deal2(){
+    public void Game_Room_Deal4(){
         Game_Room temproom = new Game_Room();
         temproom.Current_Players.add(new Player("Terry"));
         temproom.Current_Players.add(new Player("Larry"));
@@ -43,4 +43,21 @@ public class Game_Room_Test {
         Assert.assertEquals(13,temproom.Current_Players.get(3).Hand.size());
     }
 
+
+    //Tests to make sure that playing the cards designated operates the way it was intended to
+    @Test
+    public void Game_Room_Play_Card(){
+        Game_Room temproom = new Game_Room();
+        temproom.Current_Players.add(new Player("Terry"));
+        temproom.Current_Players.add(new Player("Larry"));
+        temproom.Current_Players.add(new Player("Carry"));
+        temproom.Deal();
+        temproom.Current_Players.get(0).Card_AppendChoice(0);
+        temproom.Current_Players.get(0).Card_AppendChoice(0);
+        temproom.Current_Players.get(0).Card_AppendChoice(0);
+        temproom.Play_Cards(0);
+        for(int i = 0; i<temproom.Current_Pile.size();i++){
+            System.out.print(temproom.Current_Pile.get(i).rank + " of " + temproom.Current_Pile.get(i).suit + "\n");
+        }
+    }
 }

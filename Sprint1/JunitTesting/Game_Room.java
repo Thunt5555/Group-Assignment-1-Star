@@ -16,4 +16,21 @@ public class Game_Room {
 
         }
     }
+
+
+
+    public void Play_Cards(int player){
+        for(int i = 0;i<Current_Players.get(player).Choices_ToPlay.size();i++){
+            Current_Pile.add(Current_Players.get(player).Choices_ToPlay.get(i));
+        }
+    }
+
+    public void Print_Pile(){
+        for(int i = 0;i<Current_Pile.size();i++){
+            System.out.print(Current_Pile.get(i));
+        }
+    }
+
+
+
 }

@@ -8,6 +8,6 @@ public class PlayingCard {
     }
 
     public void Print_Card(){
-        System.out.print(rank + " of " + suit);
+        System.out.print(rank + " of " + suit + "\n");
     }
 }
