@@ -1,12 +1,16 @@
 # RESPONSIBILITIES
 
-Tim:
+Tim: CRUD Lobby: Turn order, Calling BS, Turn History: 2 Story Points | CRUD Lobby: Win Conditions and Game End: 2 Story Points
+Total Story Points: 4
 
-Mubarak:
+Mubarak: Spike: new testing framework for JavaScript: 2 Story Points | CRUD Login: updating login credentials: 1 Story Point | CRUD UI: login and lobby display: 1 Story Point
+Total Story Points: 4
 
-Josh:
+Josh: CRUD Database: codification and refinement: 1 Story Point | CRUD Database: messaging and chat rooms: 2 Story Points
+Total Story Points: 3
 
-Jake:
+Jake: Spike: Hosting and joining: 3 Story Points
+Total Story Points: 3
 
 # INDIVIDUAL PROGRESS AND SPEED PER POINT
 
