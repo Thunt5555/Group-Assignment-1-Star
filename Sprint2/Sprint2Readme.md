@@ -16,7 +16,7 @@ Total Story Points: 3
 
 Tim: Current Progress- Finished creating elements surrounding the history and calling bs function, working on turn order and game logic for carrying out game
 
-Mubarak: Current Progress-
+Mubarak: Current Progress- Refactoring and reorganization of the app.js to sub interdependent classes working in unison, hosting different functionalities of the application
 
 Josh: Current Progress-
 
