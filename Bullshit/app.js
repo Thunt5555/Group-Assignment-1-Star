@@ -1,6 +1,7 @@
 // Import Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getDatabase, ref, set, onChildAdded } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -16,6 +17,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase(app);
 
 // Signup function
 function signUp(event) {
@@ -30,25 +32,20 @@ function signUp(event) {
   // Firebase signup function
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed up successfully
       const user = userCredential.user;
       alert("User signed up successfully: " + user.email);
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert("Error: " + errorMessage);
+      alert("Error: " + error.message);
     });
 }
 
-// Attach the event listener to the form
 document.getElementById('signupForm').addEventListener('submit', signUp);
 
 // Sign-in function
 function signIn(event) {
-  event.preventDefault();  // Prevents the form from submitting and reloading the page
+  event.preventDefault();
   
-  // Get email and password values from the form inputs
   const email = document.getElementById('emailSignIn').value;
   const password = document.getElementById('passwordSignIn').value;
 
@@ -57,39 +54,26 @@ function signIn(event) {
     return;
   }
 
-
-  // Call Firebase authentication method
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
       const user = userCredential.user;
       alert("User signed in successfully: " + user.email);
       showMainMenu(); 
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert("Error: " + errorMessage);
+      alert("Error: " + error.message);
     });
 }
 
-// Show the main menu
 function showMainMenu() {
   document.getElementById('mainMenu').style.display = 'block';
-  // Hide the signup and signin forms
   document.getElementById('signupForm').style.display = 'none';
   document.getElementById('signInForm').style.display = 'none';
-
-  document.querySelector('#authSection h2:nth-of-type(1)').style.display = 'none'; // Hide Sign Up header
-  document.querySelector('#authSection h2:nth-of-type(2)').style.display = 'none'; // Hide Sign In header
- 
-
-  // hide the guest button
+  document.querySelector('#authSection h2:nth-of-type(1)').style.display = 'none';
+  document.querySelector('#authSection h2:nth-of-type(2)').style.display = 'none';
   document.getElementById('guestButton').style.display = 'none';
 }
 
-
-// Attach the event listener to the form
 document.getElementById('signInForm').addEventListener('submit', signIn);
 
 function signInGuest(event) {
@@ -97,22 +81,51 @@ function signInGuest(event) {
 
   signInAnonymously(auth)
     .then(() => {
-      // Signed in..
       alert("Guest user signed in successfully");
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert("Error: " + errorMessage);
+      alert("Error: " + error.message);
     });
 }
 
 document.getElementById('guestButton').addEventListener('click', signInGuest);
 
+function sendMessage(e) {
+  e.preventDefault();
 
-// Add friends functionality
-function showFriendsMenu() {
-  const friendsMenu = document.getElementById('friendsMenu');
-  friendsMenu.style.display = 'block'; // Show the friends menu
-  // You can hide other sections if necessary
+  const timestamp = Date.now();
+  const messageInput = document.getElementById("message-input");
+  const message = messageInput.value;
+  const username = auth.currentUser.email || "Guest";
+
+  messageInput.value = "";
+
+  document
+    .getElementById("messages")
+    .scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+
+  set(ref(db, "messages/" + timestamp), {
+    username,
+    message,
+  });
 }
+
+document.getElementById("message-form").addEventListener("submit", sendMessage);
+
+function showChatMenu() {
+  const chatMenu = document.getElementById('chatMenu');
+  chatMenu.style.display = 'block';
+
+  const username = auth.currentUser.email || "Guest";
+
+  const fetchChat = ref(db, "messages/");
+  onChildAdded(fetchChat, (snapshot) => {
+    const messages = snapshot.val();
+    const message = `<li class=${
+      username === messages.username ? "sent" : "receive"
+    }><span>${messages.username}: </span>${messages.message}</li>`;
+    document.getElementById("messages").innerHTML += message;
+  });
+}
+
+document.getElementById('chatButton').addEventListener('click', showChatMenu);
