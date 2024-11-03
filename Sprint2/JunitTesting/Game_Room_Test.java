@@ -57,7 +57,7 @@ public class Game_Room_Test {
         temproom.Current_Players.get(0).Card_AppendChoice(0);
         temproom.Play_Cards(0);
         for(int i = 0; i<temproom.Current_Pile.size();i++){
-            for(int j = 0;i<temproom.Current_Pile.get(i).size();j++)
+            for(int j = 0;j<temproom.Current_Pile.get(i).size();j++)
                 temproom.Current_Pile.get(i).get(j).Print_Card();
         }
     }
