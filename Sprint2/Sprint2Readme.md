@@ -18,7 +18,7 @@ Tim: Current Progress- Finished creating elements surrounding the history and ca
 
 Mubarak: Current Progress- Refactoring and reorganization of the app.js to sub interdependent classes working in unison, hosting different functionalities of the application
 
-Josh: Current Progress-
+Josh: Current Progress- Working on refining and connecting the database to the game since, finished creating a public chat room, but need to create private chat rooms.
 
 Jake: Current Progress- Working on server hosting and joining
 
