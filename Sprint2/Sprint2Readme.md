@@ -20,7 +20,7 @@ Mubarak: Current Progress- Refactoring and reorganization of the app.js to sub i
 
 Josh: Current Progress-
 
-Jake: Current Progress-
+Jake: Current Progress- Working on server hosting and joining
 
 
 # GROUP PROGRESS: UPDATE EXACTLY WHEN PUSHED
