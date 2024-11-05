@@ -9,7 +9,7 @@ public class DeckTest {
     //Makes sure that every last card of a suit is present and accounted for
     @Test
     public void initTest(){
-        temp.initDeck();
+        Assert.assertEquals(temp.initDeck(),temp.initDeck());
         for(int i = 0;i<52;i++) {
             System.out.print(temp.deck_of_cards.get(i).rank + " of ");
             System.out.print(temp.deck_of_cards.get(i).suit + "\n");
@@ -34,6 +34,7 @@ public class DeckTest {
         int counterhearts = 0;
         temp.initDeck();
         temp.shuffleDeck();
+        Assert.assertTrue(temp.initDeck().get(0) != temp.shuffleDeck().get(0));
         for(int i = 0;i<52;i++) {
             if (temp.deck_of_cards.get(i).suit == "Spades") {
                 counterspades += 1;

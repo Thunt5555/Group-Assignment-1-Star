@@ -7,7 +7,8 @@ public class PlayingCard {
         this.suit = suit;
     }
 
-    public void Print_Card(){
+    public String Print_Card(){
         System.out.print(rank + " of " + suit + "\n");
+        return rank + " of " + suit;
     }
 }
