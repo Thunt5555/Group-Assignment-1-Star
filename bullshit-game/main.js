@@ -9,9 +9,10 @@ function showMainMenu() {
 
     document.querySelector('#authSection h2:nth-of-type(1)').style.display = 'none';
     document.querySelector('#authSection h2:nth-of-type(2)').style.display = 'none';
-    // hide guest button
+    // Hide guest button
     document.getElementById('guestButton').style.display = 'none';
 }
+
 // Function to toggle the friends menu
 function toggleFriendsMenu() {
     const friendsMenu = document.getElementById('friendsMenu');
@@ -64,6 +65,26 @@ if (sendFriendRequestButton) {
         }
     });
 }
+
+// Slideshow functionality
+document.addEventListener('DOMContentLoaded', () => {
+    let currentIndex = 0;
+    const images = document.querySelectorAll('.slideshow-image');
+    const totalImages = images.length;
+
+    // Function to show the next image in the slideshow
+    function showNextImage() {
+        images[currentIndex].classList.remove('active'); // Hide current image
+        currentIndex = (currentIndex + 1) % totalImages; // Move to the next image
+        images[currentIndex].classList.add('active'); // Show next image
+    }
+
+    // Initial call to display the first image
+    images[currentIndex].classList.add('active');
+    
+    // Change image every 4 seconds
+    setInterval(showNextImage, 4000);
+});
 
 // Export the showMainMenu function
 export { showMainMenu };

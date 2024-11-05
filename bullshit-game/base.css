@@ -1,0 +1,33 @@
+/* base.css */
+/* base.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; /* Remove margin to make full use of the screen */
+    height: 100vh; /* Ensure the body takes the full height of the viewport */
+    background-image: url('images/bold.webp'); /* Use your image path */
+    background-size: cover; /* Ensure the image covers the entire background */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
+
+button {
+    background-color: #808000;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    margin: 4px 0;
+}
+
+button:hover {
+    background-color: #556B2F;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
