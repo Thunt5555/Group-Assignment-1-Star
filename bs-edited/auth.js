@@ -2,7 +2,27 @@
 import { auth } from './firebase.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-// Signup function
+// Function to handle login logic
+function handleLogin(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get the email and password from input fields
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Call Firebase sign-in function
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            alert("User signed in successfully: " + user.email);
+            showMainMenu(); // Show the main menu after successful login
+        })
+        .catch((error) => {
+            alert("Error: " + error.message); // Handle errors
+        });
+}
+
+// Sign up function
 function signUp(event) {
     event.preventDefault();
     const email = document.getElementById('email').value;
@@ -17,15 +37,14 @@ function signUp(event) {
         .then((userCredential) => {
             const user = userCredential.user;
             alert("User signed up successfully: " + user.email);
+            showMainMenu(); // Optionally show main menu after signup
         })
         .catch((error) => {
-            alert("Error: " + error.message);
+            alert("Error: " + error.message); // Handle errors
         });
 }
 
-document.getElementById('signupForm').addEventListener('submit', signUp);
-
-// Sign-in function
+// Sign in function
 function signIn(event) {
     event.preventDefault();
     const email = document.getElementById('emailSignIn').value;
@@ -40,14 +59,12 @@ function signIn(event) {
         .then((userCredential) => {
             const user = userCredential.user;
             alert("User signed in successfully: " + user.email);
-            showMainMenu(); 
+            showMainMenu(); // Show main menu on successful sign-in
         })
         .catch((error) => {
-            alert("Error: " + error.message);
+            alert("Error: " + error.message); // Handle errors
         });
 }
-
-document.getElementById('signInForm').addEventListener('submit', signIn);
 
 // Guest sign-in function
 function signInGuest(event) {
@@ -55,21 +72,23 @@ function signInGuest(event) {
     signInAnonymously(auth)
         .then(() => {
             alert("Guest user signed in successfully");
+            showMainMenu(); // Optionally show main menu for guest
         })
         .catch((error) => {
-            alert("Error: " + error.message);
+            alert("Error: " + error.message); // Handle errors
         });
 }
 
-document.getElementById('guestButton').addEventListener('click', signInGuest);
-
+// Function to show the main menu
 function showMainMenu() {
     document.getElementById('mainMenu').style.display = 'block';
-    document.getElementById('signupForm').style.display = 'none';
-    document.getElementById('signInForm').style.display = 'none';
-    document.querySelector('#authSection h2:nth-of-type(1)').style.display = 'none';
-    document.querySelector('#authSection h2:nth-of-type(2)').style.display = 'none';
-    document.getElementById('guestButton').style.display = 'none';
+    document.getElementById('authSection').style.display = 'none'; // Hide auth section
 }
 
-export { signIn, signUp, signInGuest, showMainMenu };
+// Event listeners for forms and buttons
+document.getElementById('loginForm').addEventListener('submit', handleLogin);
+document.getElementById('signupForm').addEventListener('submit', signUp);
+document.getElementById('guestButton').addEventListener('click', signInGuest);
+
+// Export functions for use in other files if needed
+export { handleLogin, signUp, signInGuest, showMainMenu };
