@@ -1,0 +1,19 @@
+body {
+    font-family: Arial, sans-serif;  
+    margin: 0;                    
+    background: #101010;       
+    background-image: url('images/bold2.png'); /* Fallback for browsers without JS */
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: slideshow 20s infinite; /* 4 images x 5 seconds each */
+}
+
+@keyframes slideshow {
+    0% { background-image: url('images/bold2.png'); }
+    25% { background-image: url('images/w.webp'); }
+    50% { background-image: url('images/class.webp'); }
+    75% { background-image: url('images/scream.png'); }
+    100% { background-image: url('images/bold2.png'); } /* Loop back to the first image */
+}
+
+/* Other global styles can go here */

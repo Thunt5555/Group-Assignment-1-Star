@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bullshit Online Game</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="mainMenu.css">
+    <link rel="stylesheet" href="friends.css">
+    <link rel="stylesheet" href="animations.css">
+    <script type="module" src="main.js" defer></script> <!-- Main entry point for your app -->
+</head>
+<body>
+
+  <div id="authSection">
+      <h2>Sign Up</h2>
+      <form id="signupForm">
+          <label for="email">Email:</label>
+          <input type="email" id="email" required><br><br>
+          
+          <label for="password">Password:</label>
+          <input type="password" id="password" required><br><br>
+          
+          <button type="submit">Sign Up</button>
+      </form>
+
+      <h2>Sign In</h2>
+      <form id="signInForm">
+          <label for="emailSignIn">Email:</label>
+          <input type="email" id="emailSignIn" required><br><br>
+          
+          <label for="passwordSignIn">Password:</label>
+          <input type="password" id="passwordSignIn" required><br><br>
+          
+          <button type="submit">Sign In</button>
+      </form>
+  </div>
+
+  <button id="guestButton" type="button">Guest</button>
+
+  <!-- Main Menu: Hidden until login -->
+  <div id="mainMenu" style="display:none;">
+      <h1>Welcome! <br>Bullshit Online Game!</h1>
+      <button id="friendsButton">Friends</button>
+      <button id="chatButton">Chat</button>
+      <!-- add more main menu options for future sprints-->
+  </div>
+
+  <!-- Friends Menu: displays after login -->
+  <div id="friendsMenu" style="display:none;">
+      <h2>Friends Management</h2>
+      <!-- View Friends Button -->
+      <button id="viewFriendsButton">View Friends</button>
+      <!-- Add Friends Button -->
+      <button id="addFriendsButton">Add Friends</button>
+      <!-- Friend Requests Button -->
+      <button id="friendRequestsButton">Friend Requests</button>
+      <!-- Friend List -->
+      <div id="friendsListSection" style="display:none;">
+          <h3>Your Friends</h3>
+          <ul id="friendsList">
+              <!-- Friends -->
+          </ul>
+          <button id="backToFriendsMenuButton">Back</button>
+      </div>
+
+      <!-- Add Friend -->
+      <div id="addFriendSection" style="display:none;">
+          <h3>Add Friend</h3>
+          <label for="friendEmail">Enter Friend's Email:</label>
+          <input type="email" id="friendEmail" required>
+          <button id="sendFriendRequestButton">Send Friend Request</button>
+          <button id="backToFriendsMenuButtonFromAdd">Back</button>
+      </div>
+
+      <!-- Friend Requests -->
+      <div id="friendRequestsSection" style="display:none;">
+          <h3>Friend Requests</h3>
+          <ul id="friendRequestsList">
+              <!-- Request list -->
+          </ul>
+          <button id="backToFriendsMenuButtonFromRequests">Back</button>
+      </div>
+
+      <button id="mainMenuButton">Go Back to Main Menu</button>
+  </div>
+
+  <!-- Chat Menu - Hidden by default -->
+  <div id="chatMenu" style="display:none;">
+    <h2>Messages</h2>
+    <button id="backToMainButton">Go Back</button>
+    <!-- messages will display here -->
+    <ul id="messages"></ul>
+
+    <!-- form to send message -->
+    <form id="message-form">
+      <input id="message-input" type="text" />
+      <button id="message-btn" type="submit">Send</button>
+    </form>
+  </div>
+
+  <!-- Include Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+
+  <!-- Include your JavaScript files -->
+  <script type="module" src="firebase.js" defer></script> <!-- Firebase initialization -->
+  <script type="module" src="auth.js" defer></script>    <!-- Authentication logic -->
+  <script type="module" src="friends.js" defer></script>  <!-- Friends management -->
+  <script type="module" src="main.js" defer></script>    <!-- Main app functionality -->
+
+</body>
+</html>
