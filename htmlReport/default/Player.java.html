@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PlayerTest Coverage Results, All in Group-Assignment-1-Star Coverage Results, Game_Room_Test Coverage Results, DeckTest Coverage Results, CardTest.TestPlayingCardRank Coverage Results</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+
+public class Player {
+    String name;
+<span class="fc" id="L5">    ArrayList&lt;PlayingCard&gt; Hand = new ArrayList&lt;PlayingCard&gt;();</span>
+    int Chips;
+<span class="fc" id="L7">    ArrayList&lt;PlayingCard&gt; Choices_ToPlay = new ArrayList&lt;PlayingCard&gt;();</span>
+
+<span class="fc" id="L9">    public Player(String name){</span>
+<span class="fc" id="L10">        this.name = name;</span>
+<span class="fc" id="L11">    }</span>
+    public void PrintName(){
+<span class="nc" id="L13">        System.out.print(name);</span>
+<span class="nc" id="L14">    }</span>
+
+    public void Card_AppendChoice(int index){
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if(Choices_ToPlay.size() &lt; 4) {</span>
+<span class="fc" id="L18">            Choices_ToPlay.add(Hand.get(index));</span>
+<span class="fc" id="L19">            Hand.remove(index);</span>
+        }
+<span class="fc" id="L21">    }</span>
+
+    public int DisplayHand(){
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        for(int i = 0;i &lt; Hand.size();i++){</span>
+<span class="fc" id="L25">            System.out.print(Hand.get(i).rank + &quot; of &quot; + Hand.get(i).suit + &quot;\n&quot;);</span>
+        }
+<span class="fc" id="L27">        return Hand.size();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
