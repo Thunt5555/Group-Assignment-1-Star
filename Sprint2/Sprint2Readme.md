@@ -20,7 +20,7 @@ Mubarak: Current Progress- Refactoring and reorganization of the app.js to sub i
 
 Josh: Current Progress- Working on refining and connecting the database to the game since, finished creating a public chat room, but need to create private chat rooms.
 
-Jake: Current Progress- Working on server hosting and joining
+Jake: Current Progress- Created domain for website with Firebase. Also added code for creating and joinging rooms.
 
 
 # GROUP PROGRESS: UPDATE EXACTLY WHEN PUSHED
