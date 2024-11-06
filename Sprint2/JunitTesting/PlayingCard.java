@@ -11,4 +11,11 @@ public class PlayingCard {
         System.out.print(rank + " of " + suit + "\n");
         return rank + " of " + suit;
     }
+
+    public String Get_Rank(){
+        return rank;
+    }
+    public String Get_Suit(){
+        return suit;
+    }
 }

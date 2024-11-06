@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Player {
@@ -6,6 +7,7 @@ public class Player {
     ArrayList<PlayingCard> Hand = new ArrayList<PlayingCard>();
     int Chips;
     ArrayList<PlayingCard> Choices_ToPlay = new ArrayList<PlayingCard>();
+    String rank_ordering[] = {"Ace" ,"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
     public Player(String name){
         this.name = name;
@@ -21,11 +23,23 @@ public class Player {
         }
     }
 
+    public void Sort_Hand(){
+        ArrayList<PlayingCard> temp_holder = new ArrayList<>();
+        for(int i = 0;i<rank_ordering.length;i++){
+            for(int j = Hand.size()-1;j>-1;j--){
+                if(rank_ordering[i].equals(Hand.get(j).Get_Rank())){
+                    temp_holder.add(Hand.get(j));
+                }
+            }
+        }
+        Hand = temp_holder;
+    }
+
     public Boolean Get_Aces(){
         boolean Ace = false;
         for(int i = 0; i< Hand.size();i++){
-            if(Hand.get(i).rank == "Ace"){
-                Card_AppendChoice(i);
+            if(Hand.get(i).rank.equals("Ace")){
+                //Card_AppendChoice(i);
                 Ace = true;
             }
         }
@@ -39,15 +53,24 @@ public class Player {
         return Hand.size();
     }
 
-    public void Pick_Cards(){
-        Scanner scan_in = new Scanner(System.in);
-        boolean keep_picking = true;
-        while(Choices_ToPlay.size() < 3 && keep_picking != false){
-            System.out.print("Please Select Card index: \n");
-            Card_AppendChoice(Integer.parseInt(scan_in.next()));
-            System.out.print("Would you like to select another card, y/n?: \n");
-            keep_picking = scan_in.nextBoolean();
+    //Rewritten code to clean up and streamline some of the code
+    public void Pick_Cards(int[] indices){
+        Arrays.stream(indices).sorted();
+        //System.out.print(indices.length + "\n");
+        for(int i = 0; i < indices.length;i++){
+            if(Choices_ToPlay.size() < 4){
+                Choices_ToPlay.add(Hand.get(i));
+                //System.out.print("Adding " + i + "\n");
+            }
+        }
+        for(int i = indices.length-1; i > -1; i--){
+            Hand.remove(indices[i]);
+            //System.out.print("Subtracting " + i + "\n");
         }
     }
+
+    //public int Take_Turn(){
+
+    //}
 
 }

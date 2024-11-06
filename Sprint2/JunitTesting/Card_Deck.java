@@ -4,7 +4,7 @@ import java.util.*;
 public class Card_Deck {
 
 String suit[] = {"Hearts", "Clubs", "Diamonds", "Spades"};
-String rank[] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
+String rank[] = {"Ace","2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
 ArrayList<PlayingCard> deck_of_cards = new ArrayList<PlayingCard>();
 
