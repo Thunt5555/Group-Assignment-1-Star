@@ -10,22 +10,32 @@
     <link rel="stylesheet" href="friends.css">
     <link rel="stylesheet" href="animations.css">
     <script type="module" src="main.js" defer></script> <!-- Main entry point for your app -->
+    <script src="friends.js"></script>
+    <script src="auth.js"></script>
 </head>
 <body>
 
     <div id="authSection" class="auth-container">
-        <h2>Log In</h2>
-        <form id="loginForm" onsubmit="handleLogin(event)">
+        <form id="loginForm" onsubmit="handleAuth(event)">
             <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit">Play Bullshit</button>
             <button type="button" id="guestButton">Play as Guest</button>
         </form>
+
+    
         <p><a href="forgot-password.html">Forgot password?</a></p>
-        <p>Don’t have an account? <a href="signup.html" id="signUpPrompt">Sign up now</a></p>
+        <p>Don’t have an account? <button id="buttonSetSigningUp">Sign Up Now</button></p>
+
+        <!-- Sign-Up Form -->
+        <form id="signupForm" onsubmit="signUp(event)" style="display:none;">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Sign Up</button>
+            <button type="button" onclick="toggleSignUp()">Cancel</button>
+        </form>
     
         <div class="explore-section">
-            <button id="exploreButton">Explore</button>
             <button id="rulesButton">Bullshit Rules</button>
             <button id="contactButton">Contact Support</button>
         </div>
@@ -35,39 +45,20 @@
     <div id="mainMenu" style="display:none;">
         <h1>Welcome! <br>Bullshit Online Game!</h1>
         <button id="friendsButton">Friends</button>
+        <button id="buttonAddFriends">Add Friends</button>
         <button id="chatButton">Chat</button>
-        <!-- add more main menu options for future sprints-->
     </div>
 
-    <!-- Friends Menu: displays after login -->
-    <div id="friendsMenu" style="display:none;">
-        <h2>Friends Management</h2>
-        <button id="viewFriendsButton">View Friends</button>
-        <button id="addFriendsButton">Add Friends</button>
-        <button id="friendRequestsButton">Friend Requests</button>
-        <div id="friendsListSection" style="display:none;">
-            <h3>Your Friends</h3>
-            <ul id="friendsList">
-                <!-- Friends -->
-            </ul>
-            <button id="backToFriendsMenuButton">Back</button>
-        </div>
-        <div id="addFriendSection" style="display:none;">
-            <h3>Add Friend</h3>
-            <label for="friendEmail">Enter Friend's Email:</label>
-            <input type="email" id="friendEmail" required>
-            <button id="sendFriendRequestButton">Send Friend Request</button>
-            <button id="backToFriendsMenuButtonFromAdd">Back</button>
-        </div>
-        <div id="friendRequestsSection" style="display:none;">
-            <h3>Friend Requests</h3>
-            <ul id="friendRequestsList">
-                <!-- Request list -->
-            </ul>
-            <button id="backToFriendsMenuButtonFromRequests">Back</button>
-        </div>
-        <button id="mainMenuButton">Go Back to Main Menu</button>
+    <!-- Add Friend Section (initially hidden) -->
+    <div id="addFriendSection" style="display:none;">
+        <h3>Add Friend</h3>
+        <label for="friendEmail">Enter Friend's Email:</label>
+        <input type="email" id="friendEmail" required>
+        <button id="sendFriendRequestButton">Send Friend Request</button>
+        <button id="backToFriendsMenuButtonFromAdd">Back</button>
     </div>
+
+
 
     <!-- Chat Menu - Hidden by default -->
     <div id="chatMenu" style="display:none;">
@@ -92,4 +83,5 @@
 
 </body>
 </html>
+
 

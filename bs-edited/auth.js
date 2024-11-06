@@ -2,6 +2,8 @@
 import { auth } from './firebase.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
+let isSigningUp = false;
+
 // Function to handle login logic
 function handleLogin(event) {
     event.preventDefault(); // Prevent default form submission
@@ -27,6 +29,7 @@ function signUp(event) {
     event.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    console.log("Signed up called!")
 
     if (password.length > 256) {
         alert("Password is too long. Maximum length is 256 characters.");
@@ -43,6 +46,21 @@ function signUp(event) {
             alert("Error: " + error.message); // Handle errors
         });
 }
+
+
+function setBool(){
+    isSigningUp = !isSigningUp;
+}
+
+function handleAuth(event) {
+    console.log("called auth with", isSigningUp);
+    isSigningUp ? signUp(event) : handleLogin(event);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const button = document.getElementById("buttonSetSigningUp");
+    button.addEventListener("click", setBool)
+});
 
 // Sign in function
 function signIn(event) {
@@ -91,4 +109,4 @@ document.getElementById('signupForm').addEventListener('submit', signUp);
 document.getElementById('guestButton').addEventListener('click', signInGuest);
 
 // Export functions for use in other files if needed
-export { handleLogin, signUp, signInGuest, showMainMenu };
+export { handleLogin, signUp, signInGuest, showMainMenu, handleAuth };
