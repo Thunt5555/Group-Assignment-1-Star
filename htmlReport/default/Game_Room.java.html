@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game_Room.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PlayerTest Coverage Results, All in Group-Assignment-1-Star Coverage Results, Game_Room_Test Coverage Results, DeckTest Coverage Results, CardTest.TestPlayingCardRank Coverage Results</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Game_Room.java</span></div><h1>Game_Room.java</h1><pre class="source lang-java linenums">import java.util.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L6">public class Game_Room {</span>
+<span class="nc" id="L7">    Card_Deck House_Deck = new Card_Deck();</span>
+<span class="nc" id="L8">    ArrayList&lt;Player&gt; Current_Players = new ArrayList&lt;Player&gt;();</span>
+<span class="nc" id="L9">    ArrayList&lt;PlayingCard&gt; Current_Pile = new ArrayList&lt;PlayingCard&gt;();</span>
+
+    public void Deal(){
+<span class="nc" id="L12">        House_Deck.initDeck();</span>
+<span class="nc" id="L13">        House_Deck.shuffleDeck();</span>
+<span class="nc bnc" id="L14" title="All 2 branches missed.">        for(int i = 0;i&lt;House_Deck.deck_of_cards.size();i++){</span>
+<span class="nc" id="L15">            Current_Players.get(i%Current_Players.size()).Hand.add(House_Deck.deck_of_cards.get(i));</span>
+
+        }
+<span class="nc" id="L18">    }</span>
+
+
+
+    public void Play_Cards(int player){
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        for(int i = 0;i&lt;Current_Players.get(player).Choices_ToPlay.size();i++){</span>
+<span class="nc" id="L24">            Current_Pile.add(Current_Players.get(player).Choices_ToPlay.get(i));</span>
+        }
+<span class="nc" id="L26">    }</span>
+
+    public int Print_Pile(){
+<span class="nc" id="L29">        int num = 0;</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        for(int i = 0;i&lt;Current_Pile.size();i++){</span>
+<span class="nc" id="L31">            System.out.print(Current_Pile.get(i));</span>
+<span class="nc" id="L32">            num += 1;</span>
+        }
+<span class="nc" id="L34">        return num;</span>
+    }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeckTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PlayerTest Coverage Results, All in Group-Assignment-1-Star Coverage Results, Game_Room_Test Coverage Results, DeckTest Coverage Results, CardTest.TestPlayingCardRank Coverage Results</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">DeckTest.java</span></div><h1>DeckTest.java</h1><pre class="source lang-java linenums">import org.junit.Assert;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import java.util.*;
+<span class="nc" id="L5">public class DeckTest {</span>
+<span class="nc" id="L6">    Card_Deck temp = new Card_Deck();</span>
+
+    //Tests to make sure the deck is properly initialized
+    //Makes sure that every last card of a suit is present and accounted for
+    @Test
+    public void initTest(){
+<span class="nc" id="L12">        Assert.assertEquals(temp.initDeck(),temp.initDeck());</span>
+<span class="nc bnc" id="L13" title="All 2 branches missed.">        for(int i = 0;i&lt;52;i++) {</span>
+<span class="nc" id="L14">            System.out.print(temp.deck_of_cards.get(i).rank + &quot; of &quot;);</span>
+<span class="nc" id="L15">            System.out.print(temp.deck_of_cards.get(i).suit + &quot;\n&quot;);</span>
+        }
+<span class="nc" id="L17">        Assert.assertEquals(&quot;Ace&quot;, temp.deck_of_cards.get(12).rank);</span>
+<span class="nc" id="L18">        Assert.assertEquals(&quot;Hearts&quot;,temp.deck_of_cards.get(12).suit);</span>
+<span class="nc" id="L19">        Assert.assertEquals(&quot;Ace&quot;,temp.deck_of_cards.get(25).rank);</span>
+<span class="nc" id="L20">        Assert.assertEquals(&quot;Clubs&quot;,temp.deck_of_cards.get(25).suit);</span>
+<span class="nc" id="L21">        Assert.assertEquals(&quot;Ace&quot;,temp.deck_of_cards.get(38).rank);</span>
+<span class="nc" id="L22">        Assert.assertEquals(&quot;Diamonds&quot;,temp.deck_of_cards.get(38).suit);</span>
+<span class="nc" id="L23">        Assert.assertEquals(&quot;Ace&quot;,temp.deck_of_cards.get(51).rank);</span>
+<span class="nc" id="L24">        Assert.assertEquals(&quot;Spades&quot;,temp.deck_of_cards.get(51).suit);</span>
+<span class="nc" id="L25">    }</span>
+
+    //Designed to check and make sure cards were not overwritten
+    // as to make sure the same number of every suit is present
+    @Test
+    public void shuffleTest(){
+<span class="nc" id="L31">        int counterspades = 0;</span>
+<span class="nc" id="L32">        int counterdiamonds = 0;</span>
+<span class="nc" id="L33">        int counterclubs = 0;</span>
+<span class="nc" id="L34">        int counterhearts = 0;</span>
+<span class="nc" id="L35">        temp.initDeck();</span>
+<span class="nc" id="L36">        temp.shuffleDeck();</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        Assert.assertTrue(temp.initDeck().get(0) != temp.shuffleDeck().get(0));</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        for(int i = 0;i&lt;52;i++) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (temp.deck_of_cards.get(i).suit == &quot;Spades&quot;) {</span>
+<span class="nc" id="L40">                counterspades += 1;</span>
+            }
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            if(temp.deck_of_cards.get(i).suit == &quot;Hearts&quot;){</span>
+<span class="nc" id="L43">                counterhearts +=1;</span>
+            }
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if(temp.deck_of_cards.get(i).suit == &quot;Clubs&quot;){</span>
+<span class="nc" id="L46">                counterclubs +=1;</span>
+            }
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            if(temp.deck_of_cards.get(i).suit == &quot;Diamonds&quot;){</span>
+<span class="nc" id="L49">                counterdiamonds +=1;</span>
+            }
+        }
+<span class="nc" id="L52">        Assert.assertEquals(13,counterclubs);</span>
+<span class="nc" id="L53">        Assert.assertEquals(13,counterhearts);</span>
+<span class="nc" id="L54">        Assert.assertEquals(13,counterspades);</span>
+<span class="nc" id="L55">        Assert.assertEquals(13,counterdiamonds);</span>
+
+<span class="nc" id="L57">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

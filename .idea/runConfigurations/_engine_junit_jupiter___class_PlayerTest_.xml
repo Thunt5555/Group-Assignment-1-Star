@@ -1,0 +1,21 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="[engine:junit-jupiter]/[class:PlayerTest]" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="Group-Assignment-1-Star" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="BUNDLED" />
+    <option name="PACKAGE_NAME" value="" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="uniqueId" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="moduleWithDependencies" />
+    </option>
+    <dir value="$PROJECT_DIR$/Sprint1/JunitTesting" />
+    <uniqueIds>
+      <uniqueId value="[engine:junit-jupiter]/[class:PlayerTest]" />
+    </uniqueIds>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
