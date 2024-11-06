@@ -1,0 +1,24 @@
+/* auth.css */
+#authSection {
+    position: absolute; /* Allow positioning on top of the background */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for the form's own size */
+    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+    padding: 20px; /* Padding for the form */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+}
+

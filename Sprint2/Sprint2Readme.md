@@ -14,13 +14,13 @@ Total Story Points: 3
 
 # INDIVIDUAL PROGRESS AND SPEED PER POINT
 
-Tim:
+Tim: Current Progress- Finished creating elements surrounding the history and calling bs function, working on turn order and game logic for carrying out game
 
-Mubarak:
+Mubarak: Current Progress- Refactoring and reorganization of the app.js to sub interdependent classes working in unison, hosting different functionalities of the application
 
-Josh:
+Josh: Current Progress- Working on refining and connecting the database to the game since, finished creating a public chat room, but need to create private chat rooms.
 
-Jake:
+Jake: Current Progress- Created domain for website with Firebase. Also added code for creating and joinging rooms.
 
 
 # GROUP PROGRESS: UPDATE EXACTLY WHEN PUSHED

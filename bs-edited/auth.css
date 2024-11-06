@@ -1,0 +1,55 @@
+/* Auth Section styles */
+.auth-container {
+    background-color: #333; /* Change to dark background */
+    border-radius: 10px;    /* Rounded corners */
+    padding: 20px;          /* Space inside the box */
+    max-width: 400px;       /* Set maximum width */
+    margin: auto;           /* Center the form */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    color: #fff;            /* White text color */
+    position: relative;      /* Allow positioning relative to the parent */
+    z-index: 1;             /* Ensure it appears above the background */
+}
+
+/* Input fields styles */
+.auth-container input[type="email"], 
+.auth-container input[type="password"] {
+    width: 100%;            /* Full width for inputs */
+    padding: 10px;         /* Space inside the input */
+    margin: 10px 0;        /* Space around inputs */
+    border: none;          /* Remove default border */
+    border-radius: 5px;    /* Rounded corners */
+}
+
+/* Button styles */
+.auth-container button {
+    width: 100%;            /* Full width for buttons */
+    padding: 10px;         /* Space inside the button */
+    margin: 10px 0;        /* Space around buttons */
+    border: none;          /* Remove default border */
+    border-radius: 5px;    /* Rounded corners */
+    background-color: #007bff; /* Button color */
+    color: white;          /* Button text color */
+    cursor: pointer;       /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+/* Button hover effect */
+.auth-container button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Additional styles for links */
+.auth-container p {
+    text-align: center;      /* Center the text */
+    margin: 5px 0;          /* Space around text */
+}
+
+.auth-container a {
+    color: #ffa;             /* Link color */
+    text-decoration: none;    /* Remove underline */
+}
+
+.auth-container a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
