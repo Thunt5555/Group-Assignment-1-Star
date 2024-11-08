@@ -25,29 +25,34 @@ function handleLogin(event) {
 }
 
 // Sign up function
-function signUp(event) {
+async function signUp(event) {
     event.preventDefault();
-
-    // Target the new sign-up specific IDs
     const email = document.getElementById('emailSignup').value;
     const password = document.getElementById('passwordSignup').value;
-    
-    // Password length check
+    const avatar = "default-avatar.png"; // Set a default avatar or allow user to choose
+
     if (password.length > 256) {
         alert("Password is too long. Maximum length is 256 characters.");
         return;
     }
 
-    // Firebase sign-up with email and password
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            alert("User signed up successfully: " + user.email);
-            showMainMenu(); // Optionally show main menu after signup
-        })
-        .catch((error) => {
-            alert("Error: " + error.message); // Handle errors
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Add user data to the 'users' collection in Firestore
+        await setDoc(doc(db, 'users', user.uid), {
+            email: user.email,
+            username: email.split('@')[0], // Create a default username based on email
+            avatar: avatar,
+            friends: [], // Initialize with an empty friends array
         });
+
+        alert("User signed up successfully: " + user.email);
+        showMainMenu(); // Optionally show main menu after signup
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
 }
 
 
