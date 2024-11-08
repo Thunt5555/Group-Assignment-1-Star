@@ -27,15 +27,18 @@ function handleLogin(event) {
 // Sign up function
 function signUp(event) {
     event.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    console.log("Signed up called!")
 
+    // Target the new sign-up specific IDs
+    const email = document.getElementById('emailSignup').value;
+    const password = document.getElementById('passwordSignup').value;
+    
+    // Password length check
     if (password.length > 256) {
         alert("Password is too long. Maximum length is 256 characters.");
         return;
     }
 
+    // Firebase sign-up with email and password
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -48,9 +51,15 @@ function signUp(event) {
 }
 
 
-function setBool(){
+
+function setBool() {
     isSigningUp = !isSigningUp;
+    document.getElementById('signupForm').style.display = isSigningUp ? 'block' : 'none';
+    document.getElementById('loginForm').style.display = isSigningUp ? 'none' : 'block';
+    document.getElementById('loginLinks').style.display = isSigningUp ? 'none' : 'block'; // Hide or show the login links
+
 }
+
 
 function handleAuth(event) {
     console.log("called auth with", isSigningUp);

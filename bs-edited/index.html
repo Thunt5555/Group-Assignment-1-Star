@@ -24,16 +24,19 @@
         </form>
 
     
-        <p><a href="forgot-password.html">Forgot password?</a></p>
-        <p>Don’t have an account? <button id="buttonSetSigningUp">Sign Up Now</button></p>
-
+        <div id="loginLinks">
+            <p><a href="forgot-password.html">Forgot password?</a></p>
+            <p>Don’t have an account? <button id="buttonSetSigningUp">Sign Up Now</button></p>
+        </div>
+        
         <!-- Sign-Up Form -->
         <form id="signupForm" onsubmit="signUp(event)" style="display:none;">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
+            <input type="email" id="emailSignup" placeholder="Email" required>
+            <input type="password" id="passwordSignup" placeholder="Password" required>
             <button type="submit">Sign Up</button>
             <button type="button" onclick="toggleSignUp()">Cancel</button>
         </form>
+
     
         <div class="explore-section">
             <button id="rulesButton">Bullshit Rules</button>
