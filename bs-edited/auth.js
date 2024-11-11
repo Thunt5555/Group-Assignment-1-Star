@@ -76,6 +76,13 @@ document.addEventListener("DOMContentLoaded", function() {
     button.addEventListener("click", setBool)
 });
 
+function toggleSignUp() {
+    // Directly show login form and hide sign-up form
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('loginLinks').style.display = 'block'; // Show login links again
+}
+
 // Sign in function
 function signIn(event) {
     event.preventDefault();

@@ -1,17 +1,27 @@
 body {
     font-family: Arial, sans-serif;  /* Font style for the entire page */
     margin: 20px;                    /* Space around the body */
-    background-color: #f0f0f0;       /* Light gray background color */
+    background-color: #7CFC00;     /* Grassy green color */
+    background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
+    background-size: 10px 10px;      /* Spacing for the dots */
 }
 
 /* Auth Section styles */
 #authSection {
-    background-color: #ffffff;        /* White background for forms */
+    background-color: #fdf7f7;      /* Black background for forms */
     padding: 20px;                    /* Space inside the forms */
     border-radius: 5px;               /* Rounded corners */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     max-width: 400px;                 /* Maximum width for forms */
     margin: auto;                     /* Center the section */
+}
+
+#contentWrapper {
+    background-color: #680202;         /* Dark red  */
+    padding: 18px;                     /* Inner padding for content */
+    border-radius: 40px;                /* Optional: Rounded corners */
+    max-width: 400px;                 /* Optional: Max width for readability */
+    margin: auto;                      /* Center content on the page */
 }
 
 /* Form styles */
@@ -24,30 +34,32 @@ input[type="email"], input[type="password"] {
     width: 100%;                      /* Full width */
     padding: 10px;                   /* Space inside input */
     margin: 8px 0;                   /* Space around input */
-    border: 1px solid #ccc;          /* Light gray border */
+    border: 1px solid #ffffff;          /* white border */
     border-radius: 4px;              /* Rounded corners */
 }
 
 /* Button styles */
 button {
-    background-color: #007bff;       /* Primary button color */
-    color: white;                     /* Button text color */
-    padding: 10px 15px;              /* Space inside button */
-    border: none;                    /* Remove default border */
-    border-radius: 4px;              /* Rounded corners */
+    background-color: #808000;       /* Olive green color */
+    color: black;                     /* Button text color */
+    padding: 10px 15px;               /* Space inside button */
+    border: none;                     /* Remove default border */
+    border-radius: 100px;               /* Rounded corners */
     cursor: pointer;                  /* Pointer cursor on hover */
     transition: background-color 0.3s; /* Smooth color transition */
+    font-weight: bold;                  /* bold text */
+    margin: 4px 0;                      /* space out buttons */
 }
 
 /* Button hover effect */
 button:hover {
-    background-color: #0056b3;       /* Darker shade on hover */
+    background-color: #556B2F;       /* Darker olive shade on hover */
 }
 
 /* Main menu styles */
 #mainMenu, #friendsMenu {
     display: none;                   /* Hidden by default */
-    background-color: #ffffff;      /* White background */
+    background-color: #66a366;      /* green background */
     padding: 20px;                  /* Space inside menus */
     border-radius: 5px;             /* Rounded corners */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
@@ -75,6 +87,6 @@ h2 {
 #friendsList li, #friendRequestsList li {
     margin: 10px 0;                  /* Space between list items */
     padding: 10px;                   /* Space inside list items */
-    background-color: #e9ecef;       /* Light gray background for items */
+    background-color: #e9ecef;      /* Light gray background for items */
     border-radius: 4px;              /* Rounded corners */
 }
