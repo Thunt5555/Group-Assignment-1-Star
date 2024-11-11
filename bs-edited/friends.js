@@ -1,62 +1,59 @@
 // Import the necessary objects and functions from your firebase.js file
 import { auth, db } from "./firebase.js";
-import { setDoc, getDoc, doc, updateDoc, arrayUnion, collection } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { setDoc, doc, getDocs, collection } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Function to show the Add Friend section
-function showAddFriendSection() {
+function testAdd() {
+    // Show the add friend section
     document.getElementById('addFriendSection').style.display = 'block';
 }
 
-// Function to add a friend by email with a status check
-async function addFriendByEmail(friendEmail) {
-    const currentUser = auth.currentUser;
-    
-    // Check if the user is logged in and not a guest
-    if (!currentUser || !currentUser.email) {
-        alert("Only registered users can add friends. Please log in with a registered account.");
+function retrieveFriendMenu() {
+    document.getElementById('friendRequestsSection').style.display = 'block';
+}
+
+// Function to send a friend request
+async function sendFriendRequest(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const friendEmail = document.getElementById('friendEmail').value; // Input friend's email
+    const user = auth.currentUser; // Get the currently signed-in user
+
+    if (!user) {
+        alert("You must be signed in to send friend requests.");
         return;
     }
-
     try {
-        // Reference to the friend user document
-        const friendDocRef = doc(db, "users", friendEmail);
-        const friendSnap = await getDoc(friendDocRef);
-
-        if (friendSnap.exists()) {
-            // Add friend to the current user's friend list
-            const userDocRef = doc(db, "users", currentUser.uid);
-            await updateDoc(userDocRef, {
-                friends: arrayUnion(friendEmail) // Add friend email to friends array
-            });
-
-            alert(`Friend request sent to ${friendEmail}`);
-        } else {
-            alert("No user found with that email address.");
-        }
+        // Create a new document in the "friendRequests" collection
+        await setDoc(doc(db, "friendRequests", friendEmail), {
+            from: user.email,
+            to: friendEmail,
+            status: "pending"
+        });
+        alert("Friend request sent to " + friendEmail);
+        document.getElementById('friendEmail').value = ""; // Clear input
     } catch (error) {
         console.error("Error adding friend: ", error);
         alert("Error adding friend.");
     }
 }
 
-// Event listener for when the DOM is fully loaded
+
+
+
+// Attach event listeners when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", function() {
-    const addFriendsButton = document.getElementById("buttonAddFriends");
+    const button = document.getElementById("buttonAddFriends");
     const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
 
-    if (addFriendsButton) {
-        addFriendsButton.addEventListener("click", async () => {
-            const friendEmail = prompt("Enter your friend's email:");
-            if (friendEmail) {
-                await addFriendByEmail(friendEmail);
-            }
-        });
+    if (button) {
+        button.addEventListener("click", testAdd); // Show the input section on button click
     }
 
     if (sendFriendRequestButton) {
-        sendFriendRequestButton.addEventListener("click", showAddFriendSection); // Show the input section on button click
+        sendFriendRequestButton.addEventListener("click", sendFriendRequest); // Handle sending friend requests
     }
 });
 
 // Export functions if needed
-export { addFriendByEmail, showAddFriendSection };
+export { sendFriendRequest };

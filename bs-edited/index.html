@@ -52,15 +52,34 @@
         <button id="chatButton">Chat</button>
     </div>
 
+    <!-- Friend List -->
+    <div id="friendsListSection" style="display:none;">
+        <h3>Your Friends</h3>
+        <ul id="friendsList">
+            <!-- Friends will be listed here -->
+        </ul>
+        <button id="backToMainMenuButtonFromFriendList">Back</button>
+    </div>
+
     <!-- Add Friend Section (initially hidden) -->
     <div id="addFriendSection" style="display:none;">
         <h3>Add Friend</h3>
         <label for="friendEmail">Enter Friend's Email:</label>
         <input type="email" id="friendEmail" required>
         <button id="sendFriendRequestButton">Send Friend Request</button>
-        <button id="backToFriendsMenuButtonFromAdd">Back</button>
+        <button id="backToMainMenuButtonFromAddList">Back</button>
     </div>
 
+    <!-- Friend Requests -->
+    <div id="friendRequestsSection" style="display:none;">
+        <h3>Friend Requests</h3>
+        <ul id="friendRequestsList">
+            <!-- Friend requests will be listed here -->
+        </ul>
+        <button id="acceptFriend">Accept Friend</button>
+        <button id="deFriend">Decline Friend</button>
+        <button id="backToFriendsMenuButtonFromRequests">Back</button>
+    </div>
 
 
     <!-- Chat Menu - Hidden by default -->
