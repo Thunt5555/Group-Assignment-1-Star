@@ -1,6 +1,7 @@
 // auth.js
-import { auth } from './firebase.js';
+import { auth, db } from './firebase.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { setDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 let isSigningUp = false;
 
@@ -39,9 +40,10 @@ async function signUp(event) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        console.log(user.email)
 
         // Add user data to the 'users' collection in Firestore
-        await setDoc(doc(db, 'users', user.uid), {
+        await setDoc(doc(db, 'users', user.email), {
             email: user.email,
             username: email.split('@')[0], // Create a default username based on email
             avatar: avatar,

@@ -1,10 +1,9 @@
-// Import the necessary objects and functions from your firebase.js file
-import { auth, db } from "./firebase.js";
-import { setDoc, doc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+// Import necessary objects and functions from firebase.js
+import { auth, db } from "./firebase.js"; // Use db for Firestore as set up in firebase.js
+import { setDoc, doc, getDoc, getDocs, collection, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Function to show the Add Friend section
 function addFriendsMenu() {
-    // Show the add friend section
     document.getElementById('addFriendSection').style.display = 'block';
 }
 
@@ -14,57 +13,81 @@ function retrieveFriendMenu() {
 
 // Function to send a friend request
 async function sendFriendRequest(event) {
-    event.preventDefault(); // Prevent default form submission
-    const friendEmail = document.getElementById('friendEmail').value; // Input friend's email
-    const user = auth.currentUser; // Get the currently signed-in user
+    event.preventDefault();
+    const friendEmail = document.getElementById('friendEmail').value;
+    const user = auth.currentUser;
+
     if (!user) {
         alert("You must be signed in to send friend requests.");
         return;
     }
+
     try {
-        // Create a new document in the "friendRequests" collection
-        await setDoc(doc(db, "friendRequests", friendEmail), {
-            sender: user.email,
-            recipient: friendEmail,
-            status: "pending"
-        });
-        alert("Friend request sent to " + friendEmail);
-        document.getElementById('friendEmail').value = ""; // Clear input
+        // Check if the friend exists in the `users` collection
+        const friendDocRef = doc(db, "users", friendEmail); // Use db here
+        const friendSnap = await getDoc(friendDocRef);
+
+        if (friendSnap.exists()) {
+            // Add a friend request to the `friendRequests` collection
+            await setDoc(doc(db, "friendRequests", `${user.uid}_${friendEmail}`), { // Use db here
+                sender: user.email,
+                recipient: friendEmail,
+                status: "pending"
+            });
+
+            alert(`Friend request sent to ${friendEmail}`);
+            document.getElementById('friendEmail').value = ""; // Clear input
+        } else {
+            alert("No user found with that email address.");
+        }
     } catch (error) {
         console.error("Error sending friend request: ", error);
         alert("Error sending friend request.");
     }
 }
 
-// Function to handle accepting a friend request
+// Function to accept a friend request
 async function acceptFriendRequest(request) {
     const user = auth.currentUser;
     if (!user) return;
 
     try {
         // Update the request status to accepted
-        await updateDoc(doc(db, "friendRequests", request.recipient), {
+        await updateDoc(doc(db, "friendRequests", `${request.sender}_${request.recipient}`), { // Use db here
             status: "accepted"
         });
-        alert("Friend request accepted from " + request.sender);
-        retrieveFriendRequests(); // Refresh the list
+
+        // Add each other as friends in their respective user documents
+        const userDocRef = doc(db, "users", user.uid); // Use db here
+        const friendDocRef = doc(db, "users", request.sender); // Use db here
+
+        // Update both users' friends lists
+        await updateDoc(userDocRef, {
+            friends: arrayUnion(request.sender)
+        });
+        await updateDoc(friendDocRef, {
+            friends: arrayUnion(user.email)
+        });
+
+        alert(`Friend request accepted from ${request.sender}`);
+        retrieveFriendRequests(); // Refresh the friend request list
     } catch (error) {
         console.error("Error accepting friend request:", error);
         alert("Error accepting friend request.");
     }
 }
 
-// Function to handle declining a friend request
+// Function to decline a friend request
 async function declineFriendRequest(request) {
     const user = auth.currentUser;
     if (!user) return;
 
     try {
-        // Remove the friend request from the database
-        await updateDoc(doc(db, "friendRequests", request.recipient), {
+        // Update the request status to declined or remove it
+        await updateDoc(doc(db, "friendRequests", `${request.sender}_${request.recipient}`), { // Use db here
             status: "declined"
         });
-        alert("Friend request declined from " + request.sender);
+        alert(`Friend request declined from ${request.sender}`);
         retrieveFriendRequests(); // Refresh the list
     } catch (error) {
         console.error("Error declining friend request:", error);
@@ -72,6 +95,7 @@ async function declineFriendRequest(request) {
     }
 }
 
+// Function to retrieve friend requests
 function retrieveFriendRequests() {
     const user = auth.currentUser;
     if (!user) {
@@ -81,8 +105,8 @@ function retrieveFriendRequests() {
     const friendRequestsList = document.getElementById('friendRequestsList');
     friendRequestsList.innerHTML = ""; // Clear old list
 
-    // Retrieve friend requests 
-    getDocs(collection(db, "friendRequests"))
+    // Retrieve friend requests
+    getDocs(collection(db, "friendRequests")) // Use db here
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const request = doc.data();
@@ -90,12 +114,11 @@ function retrieveFriendRequests() {
                     const li = document.createElement('li');
                     li.textContent = `Friend request from: ${request.sender}`;
                     
-                    // Create Accept button
+                    // Accept and decline buttons
                     const acceptButton = document.createElement('button');
                     acceptButton.textContent = "Accept";
                     acceptButton.onclick = () => acceptFriendRequest(request);
 
-                    // Create Decline button
                     const declineButton = document.createElement('button');
                     declineButton.textContent = "Decline";
                     declineButton.onclick = () => declineFriendRequest(request);
@@ -130,5 +153,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// In friends.js
+document.getElementById("friendsButton").addEventListener("click", () => {
+    retrieveFriendMenu(); // Show the friendRequestsSection
+    retrieveFriendRequests(); // Load friend requests into the list
+});
+
+
 // Export functions if needed
-export { sendFriendRequest };
+export { sendFriendRequest, acceptFriendRequest, declineFriendRequest, retrieveFriendRequests };
