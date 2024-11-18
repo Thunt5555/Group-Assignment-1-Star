@@ -12,6 +12,8 @@ function signUp(event) {
         alert("Password is too long. Maximum length is 256 characters.");
         return;
     }
+    document.body.classList.add('background-signup');
+
 
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -79,4 +81,4 @@ document.getElementById('guestButton').addEventListener('click', signInGuest);
 // Optional: Attach event listener for Google sign-in
 document.getElementById('googleSignInButton')?.addEventListener('click', signInWithGoogle);
 
-export { signUp, signIn, signInGuest, signInWithGoogle };
+export { signUp, signIn, signInGuest, signInWithGoogle }; 

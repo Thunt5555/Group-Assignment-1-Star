@@ -1,48 +1,69 @@
 /* Auth Section styles */
+body {
+    margin: 0;               /* Remove default margin */
+    height: 100vh;           /* Full viewport height */
+    position: relative;       /* Allow absolute positioning for children */
+}
+
 .auth-container {
-    background-color: #333; /* Change to dark background */
-    border-radius: 10px;    /* Rounded corners */
-    padding: 20px;          /* Space inside the box */
-    max-width: 400px;       /* Set maximum width */
-    margin: auto;           /* Center the form */
+    position: absolute;       /* Positioning relative to the body */
+    bottom: 20px;            /* Distance from the bottom */
+    left: 50%;               /* Center horizontally */
+    transform: translateX(-50%); /* Offset by half its width */
+    background-color: #333;  /* Dark background */
+    border-radius: 80px;     /* Rounded corners */
+    padding: 60px;           /* Space inside the box */
+    max-width: 700px;        /* Set maximum width */
+    width: 100%;             /* Allow it to be responsive */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    color: #fff;            /* White text color */
-    position: relative;      /* Allow positioning relative to the parent */
-    z-index: 1;             /* Ensure it appears above the background */
+    color: #fff;             /* White text color */
+    z-index: 1;              /* Ensure it appears above the background */
 }
 
 /* Input fields styles */
 .auth-container input[type="email"], 
 .auth-container input[type="password"] {
-    width: 100%;            /* Full width for inputs */
-    padding: 10px;         /* Space inside the input */
-    margin: 10px 0;        /* Space around inputs */
-    border: none;          /* Remove default border */
+    width: 95%;            
+    padding: 20px;         /* Increased padding for taller input */
+    font-size: 18px;       /* Increased font size */
+    margin: 10px 0;        
+    border: none;          
     border-radius: 5px;    /* Rounded corners */
 }
 
 /* Button styles */
-.auth-container button {
-    width: 100%;            /* Full width for buttons */
-    padding: 10px;         /* Space inside the button */
-    margin: 10px 0;        /* Space around buttons */
-    border: none;          /* Remove default border */
-    border-radius: 5px;    /* Rounded corners */
+.main-button {
+    width: 100%;             /* Full width for main buttons */
+    padding: 20px;          /* Increase padding for larger buttons */
+    font-size: 24px;        /* Increase font size for better readability */
+    margin: 10px 0;         /* Space around buttons */
+    border: none;           /* Remove default border */
+    border-radius: 5px;     /* Rounded corners */
     background-color: #007bff; /* Button color */
-    color: white;          /* Button text color */
-    cursor: pointer;       /* Pointer cursor on hover */
+    color: white;           /* Button text color */
+    cursor: pointer;        /* Pointer cursor on hover */
     transition: background-color 0.3s; /* Smooth transition */
 }
 
 /* Button hover effect */
-.auth-container button:hover {
+.main-button:hover {
     background-color: #0056b3; /* Darker shade on hover */
 }
 
+/* Styles for the inline buttons at the bottom */
+.inline-button {
+    width: 48%;              /* Take almost half of the line */
+    padding: 15px;          /* Space inside the button */
+    font-size: 18px;        /* Font size for the inline buttons */
+    margin: 5px 1%;         /* Space around inline buttons */
+    display: inline-block;   /* Keep them inline */
+}
+
 /* Additional styles for links */
-.auth-container p {
-    text-align: center;      /* Center the text */
-    margin: 5px 0;          /* Space around text */
+.auth-container p, .auth-container a {
+    font-size: 18px;         /* Increase font size for all prompt text */
+    text-align: center;      /* Center the prompt text */
+    margin: 10px 0;         /* Add space around the prompts */
 }
 
 .auth-container a {

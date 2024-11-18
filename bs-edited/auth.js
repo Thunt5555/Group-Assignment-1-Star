@@ -1,6 +1,9 @@
 // auth.js
-import { auth } from './firebase.js';
+import { auth, db } from './firebase.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { setDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+let isSigningUp = false;
 
 // Function to handle login logic
 function handleLogin(event) {
@@ -23,25 +26,63 @@ function handleLogin(event) {
 }
 
 // Sign up function
-function signUp(event) {
+async function signUp(event) {
     event.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('emailSignup').value;
+    const password = document.getElementById('passwordSignup').value;
+    const avatar = "default-avatar.png"; // Set a default avatar or allow user to choose
 
     if (password.length > 256) {
         alert("Password is too long. Maximum length is 256 characters.");
         return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            alert("User signed up successfully: " + user.email);
-            showMainMenu(); // Optionally show main menu after signup
-        })
-        .catch((error) => {
-            alert("Error: " + error.message); // Handle errors
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log(user.email)
+
+        // Add user data to the 'users' collection in Firestore
+        await setDoc(doc(db, 'users', user.email), {
+            email: user.email,
+            username: email.split('@')[0], // Create a default username based on email
+            avatar: avatar,
+            friends: [], // Initialize with an empty friends array
         });
+
+        alert("User signed up successfully: " + user.email);
+        showMainMenu(); // Optionally show main menu after signup
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
+}
+
+
+
+function setBool() {
+    isSigningUp = !isSigningUp;
+    document.getElementById('signupForm').style.display = isSigningUp ? 'block' : 'none';
+    document.getElementById('loginForm').style.display = isSigningUp ? 'none' : 'block';
+    document.getElementById('loginLinks').style.display = isSigningUp ? 'none' : 'block'; // Hide or show the login links
+
+}
+
+
+function handleAuth(event) {
+    console.log("called auth with", isSigningUp);
+    isSigningUp ? signUp(event) : handleLogin(event);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const button = document.getElementById("buttonSetSigningUp");
+    button.addEventListener("click", setBool)
+});
+
+function toggleSignUp() {
+    // Directly show login form and hide sign-up form
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('loginLinks').style.display = 'block'; // Show login links again
 }
 
 // Sign in function
@@ -91,4 +132,4 @@ document.getElementById('signupForm').addEventListener('submit', signUp);
 document.getElementById('guestButton').addEventListener('click', signInGuest);
 
 // Export functions for use in other files if needed
-export { handleLogin, signUp, signInGuest, showMainMenu };
+export { handleLogin, signUp, signInGuest, showMainMenu, handleAuth };
