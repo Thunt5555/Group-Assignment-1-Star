@@ -36,8 +36,11 @@ public class Game_Room {
 
 
     public void Play_Cards(Player player){
-
-        Current_Pile.add(player.Choices_ToPlay);
+        ArrayList<PlayingCard> temp = new ArrayList<>();
+        for(int i = 0;i<player.Choices_ToPlay.size();i++){
+            temp.add(player.Choices_ToPlay.get(i));
+        }
+        Current_Pile.add(temp);
         player.Choices_ToPlay.clear();
 
     }

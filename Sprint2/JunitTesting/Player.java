@@ -52,10 +52,16 @@ public class Player {
         }
         return Hand.size();
     }
+    public int DisplayCardChoice(){
+        for(int i = 0;i < Choices_ToPlay.size();i++){
+            System.out.print(Choices_ToPlay.get(i).rank + " of " + Choices_ToPlay.get(i).suit + "\n");
+        }
+        return Choices_ToPlay.size();
+    }
 
     //Rewritten code to clean up and streamline some of the code
     public void Pick_Cards(int[] indices){
-        Arrays.stream(indices).sorted();
+        Arrays.sort(indices);
         //System.out.print(indices.length + "\n");
         for(int i = 0; i < indices.length;i++){
             if(Choices_ToPlay.size() < 4){
@@ -63,14 +69,11 @@ public class Player {
                 //System.out.print("Adding " + i + "\n");
             }
         }
+        //System.out.print(indices.length + "\n");
         for(int i = indices.length-1; i > -1; i--){
             Hand.remove(indices[i]);
             //System.out.print("Subtracting " + i + "\n");
         }
     }
-
-    //public int Take_Turn(){
-
-    //}
 
 }

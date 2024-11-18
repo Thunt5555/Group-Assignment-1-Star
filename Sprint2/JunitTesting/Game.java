@@ -23,27 +23,39 @@ public class Game {
         }
     }
 
+    public void Take_Turn(int[] Choices) {
+
+        System.out.print("\n" + Number_of_Turns % Turn_Order.size() + "\n");
+        Turn_Order.get(Number_of_Turns % Turn_Order.size() ).Pick_Cards(Choices);
+        Current_Game_Room.Play_Cards(Turn_Order.get(Number_of_Turns % Turn_Order.size() ));
+
+        Number_of_Turns += 1;
+    }
+
     //Calls the last cards played and checks it against what the suit should have been
     public boolean Call_BS(){
         if(Current_Game_Room.Current_Pile_Check()){
             return false;
         }
         ArrayList<PlayingCard> Checking = new ArrayList<>();
+        //Grabs the last collection of cards played together
         Checking = Current_Game_Room.BS_Grab();
         for(int i = 0; i<Checking.size() - 1;i++){
+            //Checks if the current card is not equal to prior suit
             if(!Checking.get(i).rank.equals(rank_ordering[(Number_of_Turns-1) % 13])){
                 return false;
             }
         }
+        //Only is called if all cards played are of the correct rank
         return true;
     }
 
     public int Who_Played_Last(){
-        if(Number_of_Turns % Turn_Order.size() == 0){
-            return Turn_Order.size() - 1;
+        if(Number_of_Turns % Turn_Order.size() != 0) {
+            return (Number_of_Turns - 1) % Turn_Order.size();
         }
         else{
-            return (Number_of_Turns % Turn_Order.size()) - 1;
+            return Turn_Order.size() -1;
         }
     }
 

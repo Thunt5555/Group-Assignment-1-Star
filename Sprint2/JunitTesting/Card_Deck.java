@@ -27,6 +27,12 @@ public ArrayList<PlayingCard> shuffleDeck(){
         deck_of_cards.set(i,deck_of_cards.get(randy));
         deck_of_cards.set(randy, temp);
     }
+    for(int i = 0; i<51;i++){
+        int randy = rand.nextInt(52);
+        PlayingCard temp = deck_of_cards.get(i);
+        deck_of_cards.set(i,deck_of_cards.get(randy));
+        deck_of_cards.set(randy, temp);
+    }
     return deck_of_cards;
 }
 

@@ -24,6 +24,90 @@ class GameTest {
 
     @Test
     void call_BS() {
+        int[] indices = new int[] {0,5,4,2};
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alex"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexa"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexei"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexandra"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexander"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexar"));
+        GameUse.Current_Game_Room.Deal();
+        GameUse.Current_Game_Room.Sort_Higher();
+        GameUse.Turn_Order_Init();
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        System.out.print(GameUse.Current_Game_Room.Current_Pile.size());
+        int counter = 0;
+        for(int i = 0;i < GameUse.Current_Game_Room.Current_Pile.get(2).size()-1 ;i++){
+            if(GameUse.Current_Game_Room.Current_Pile.get(2).get(i).rank.equals(GameUse.Current_Game_Room.Current_Pile.get(2).get(0).rank) && GameUse.Current_Game_Room.Current_Pile.get(2).get(i).rank.equals(GameUse.rank_ordering[(GameUse.Number_of_Turns-1) % 13])){
+                counter += 1;
+            }
+        }
+        if(counter == 4){
+            Assert.assertTrue(GameUse.Call_BS());
+        }
+        else {
+            Assert.assertTrue(!GameUse.Call_BS());
+        }
+    }
+
+    @Test
+    void who_Played_Last() {
+        int[] indices = new int[] {0,5,4,2};
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alex"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexa"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexei"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexandra"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexander"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexar"));
+        GameUse.Current_Game_Room.Deal();
+        GameUse.Current_Game_Room.Sort_Higher();
+        GameUse.Turn_Order_Init();
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        Assert.assertEquals(2,GameUse.Who_Played_Last());
+    }
+
+    @Test
+    void current_Rank() {
+        int[] indices = new int[] {0,5,4,2};
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alex"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexa"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexei"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexandra"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexander"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexar"));
+        GameUse.Current_Game_Room.Deal();
+        GameUse.Current_Game_Room.Sort_Higher();
+        GameUse.Turn_Order_Init();
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        Assert.assertEquals("4",GameUse.Current_Rank());
+    }
+
+    @Test
+    void current_Turn() {
+        int[] indices = new int[] {0,5,4,2};
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alex"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexa"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexei"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexandra"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexander"));
+        GameUse.Current_Game_Room.Current_Players.add(new Player("Alexar"));
+        GameUse.Current_Game_Room.Deal();
+        GameUse.Current_Game_Room.Sort_Higher();
+        GameUse.Turn_Order_Init();
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        Assert.assertEquals(3,GameUse.Current_Turn());
+    }
+
+    @Test
+    void take_Turn(){
         int[] indices = new int[] {0,6,4,2};
         GameUse.Current_Game_Room.Current_Players.add(new Player("Alex"));
         GameUse.Current_Game_Room.Current_Players.add(new Player("Alexa"));
@@ -34,24 +118,8 @@ class GameTest {
         GameUse.Current_Game_Room.Deal();
         GameUse.Current_Game_Room.Sort_Higher();
         GameUse.Turn_Order_Init();
-        GameUse.Turn_Order.get(0).Pick_Cards(indices);
-        GameUse.Turn_Order.get(1).Pick_Cards(indices);
-        GameUse.Turn_Order.get(2).Pick_Cards(indices);
-        GameUse.Current_Game_Room.Play_Cards(GameUse.Turn_Order.get(0));
-        GameUse.Current_Game_Room.Play_Cards(GameUse.Turn_Order.get(1));
-        GameUse.Current_Game_Room.Play_Cards(GameUse.Turn_Order.get(2));
-        Assert.assertTrue(GameUse.Call_BS());
-    }
-
-    @Test
-    void who_Played_Last() {
-    }
-
-    @Test
-    void current_Rank() {
-    }
-
-    @Test
-    void current_Turn() {
+        GameUse.Take_Turn(indices);
+        GameUse.Take_Turn(indices);
+        GameUse.Current_Game_Room.Print_Pile();
     }
 }

@@ -53,6 +53,11 @@ public class DeckTest {
         Assert.assertEquals(13,counterhearts);
         Assert.assertEquals(13,counterspades);
         Assert.assertEquals(13,counterdiamonds);
+        for(int i = 0;i<52;i++) {
+            System.out.print(temp.deck_of_cards.get(i).rank + " of ");
+            System.out.print(temp.deck_of_cards.get(i).suit + "\n");
+        }
+
 
     }
 }

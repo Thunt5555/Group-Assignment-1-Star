@@ -57,16 +57,17 @@ class PlayerTest {
     @Test
     void PickingCards(){
         int[] indices = new int[4];
-        indices[0] = 0;
-        indices[1] = 1;
+        indices[0] = 3;
+        indices[1] = 0;
         indices[2] = 2;
-        indices[3] = 3;
+        indices[3] = 1;
         temp.Hand.add(new PlayingCard("Ace","Spades"));
         temp.Hand.add(new PlayingCard("Ace","Hearts"));
         temp.Hand.add(new PlayingCard("Ace","Clubs"));
         temp.Hand.add(new PlayingCard("Ace","Diamonds"));
         temp.Pick_Cards(indices);
         temp.DisplayHand();
+        temp.DisplayCardChoice();
     }
 
     @Test
