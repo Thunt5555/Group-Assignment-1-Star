@@ -3,6 +3,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, set, onChildAdded } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
+import { hostGame } from "./hostGame.js";
+import { joinGame } from "./joinGame.js";
+import { startGame } from "./startGame.js";
+import { addBotsToLobby } from "./addBotsToLobby.js";
+
+
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyB44xbxuYHv3_VjpQ1zcuiKHkOesal50xM",
@@ -16,8 +22,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+export const auth = getAuth(app);
+export const db = getDatabase(app);
 
 // Signup function
 function signUp(event) {
@@ -179,15 +185,25 @@ function sendPrivateMessage(e) {
 
 document.getElementById('privateChatButton').addEventListener('click', sendPrivateMessage);
 
-// creating a game
+
 document.getElementById('hostGameButton').addEventListener('click', async () => {
   const hostId = auth.currentUser ? auth.currentUser.uid : "guest";
-  await hostGame(hostId);
+  await hostGame(hostId); // Calls hostGame from hostGame.js
 });
 
-// joining a game
 document.getElementById('joinGameButton').addEventListener('click', async () => {
   const gameId = document.getElementById('gameIdInput').value;
   const playerId = auth.currentUser ? auth.currentUser.uid : "guest";
-  await joinGame(gameId, playerId);
+  await joinGame(gameId, playerId); // Calls joinGame from joinGame.js
+});
+
+document.getElementById('startGameButton').addEventListener('click', async () => {
+  const gameId = prompt("Enter your Game ID to start the game:");
+  await startGame(gameId); // Calls startGame from startGame.js
+});
+
+document.getElementById('addBotsButton')?.addEventListener('click', async () => {
+  const gameId = prompt("Enter your Game ID to add bots:");
+  const botCount = parseInt(prompt("How many bots to add?"), 10);
+  await addBotsToLobby(gameId, botCount); // Calls addBotsToLobby from addBotsToLobby.js
 });
