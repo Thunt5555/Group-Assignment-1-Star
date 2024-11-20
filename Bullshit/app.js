@@ -3,6 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, set, onChildAdded } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
+
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyB44xbxuYHv3_VjpQ1zcuiKHkOesal50xM",
@@ -13,6 +14,7 @@ const firebaseConfig = {
     appId: "1:203675511936:web:c7f469220ea8402f580a65",
     measurementId: "G-2DMHJZMW1F"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -129,3 +131,16 @@ function showChatMenu() {
 }
 
 document.getElementById('chatButton').addEventListener('click', showChatMenu);
+
+// creating a game
+document.getElementById('hostGameButton').addEventListener('click', async () => {
+  const hostId = auth.currentUser ? auth.currentUser.uid : "guest";
+  await hostGame(hostId);
+});
+
+// joining a game
+document.getElementById('joinGameButton').addEventListener('click', async () => {
+  const gameId = document.getElementById('gameIdInput').value;
+  const playerId = auth.currentUser ? auth.currentUser.uid : "guest";
+  await joinGame(gameId, playerId);
+});
