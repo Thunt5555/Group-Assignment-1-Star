@@ -13,6 +13,7 @@ public class Game_Room {
     public void Deal(){
         House_Deck.initDeck();
         House_Deck.shuffleDeck();
+        House_Deck.shuffleDeck();
         for(int i = 0;i<House_Deck.deck_of_cards.size();i++){
             Current_Players.get(i%Current_Players.size()).Hand.add(House_Deck.deck_of_cards.get(i));
 
