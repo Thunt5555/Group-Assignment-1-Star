@@ -129,3 +129,49 @@ function showChatMenu() {
 }
 
 document.getElementById('chatButton').addEventListener('click', showChatMenu);
+
+function sendPrivateMessage(e) {
+  e.preventDefault();
+
+  const timestamp = Date.now();
+  const messageInput = document.getElementById("message-input");
+  const recipientInput = document.getElementById("recipient-input"); // Field for recipient
+  const message = messageInput.value;
+  const recipient = recipientInput.value.trim(); // Email or user ID of the recipient
+  const sender = auth.currentUser.email; // Current user's email as the sender
+
+  if (!recipient) {
+    alert("Please specify a recipient.");
+    return;
+  }
+
+  if (!message) {
+    alert("Message cannot be empty.");
+    return;
+  }
+
+  messageInput.value = "";
+
+  // Generate a unique conversation ID (e.g., sorted by sender and recipient)
+  const conversationId = sender < recipient ? `${sender}_${recipient}` : `${recipient}_${sender}`;
+
+  // Save the message in the database under the conversation ID
+  set(ref(db, `privateMessages/${conversationId}/${timestamp}`), {
+    sender,
+    recipient,
+    message,
+    timestamp,
+  })
+    .then(() => {
+      console.log("Message sent successfully!");
+      document
+        .getElementById("privateChat")
+        .scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+    })
+    .catch((error) => {
+      console.error("Error sending message:", error);
+      alert("Failed to send message.");
+    });
+}
+
+document.getElementById('privateChatButton').addEventListener('click', sendPrivateMessage);
