@@ -1,5 +1,5 @@
 import { ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { db } from "./firebaseConfig.js";
+import { db } from "./app.js";
 
 export async function addBotsToLobby(gameId, botCount) {
     try {
