@@ -207,5 +207,4 @@ document.getElementById('addBotsButton')?.addEventListener('click', async () => 
   const gameId = prompt("Enter your Game ID to add bots:");
   const botCount = parseInt(prompt("How many bots to add?"), 10);
   await addBotsToLobby(gameId, botCount);
-}
 });
