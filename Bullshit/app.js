@@ -187,25 +187,25 @@ function sendPrivateMessage(e) {
 
 document.getElementById('privateChatButton').addEventListener('click', sendPrivateMessage);
 
-
 document.getElementById('hostGameButton').addEventListener('click', async () => {
   const hostId = auth.currentUser ? auth.currentUser.uid : "guest";
-  await hostGame(hostId); // Calls hostGame from hostGame.js
+  await hostGame(hostId);
 });
 
 document.getElementById('joinGameButton').addEventListener('click', async () => {
   const gameId = document.getElementById('gameIdInput').value;
   const playerId = auth.currentUser ? auth.currentUser.uid : "guest";
-  await joinGame(gameId, playerId); // Calls joinGame from joinGame.js
+  await joinGame(gameId, playerId);
 });
 
-document.getElementById('startGameButton').addEventListener('click', async () => {
+document.getElementById('startGameButton')?.addEventListener('click', async () => {
   const gameId = prompt("Enter your Game ID to start the game:");
-  await startGame(gameId); // Calls startGame from startGame.js
+  await startGame(gameId);
 });
 
 document.getElementById('addBotsButton')?.addEventListener('click', async () => {
   const gameId = prompt("Enter your Game ID to add bots:");
   const botCount = parseInt(prompt("How many bots to add?"), 10);
-  await addBotsToLobby(gameId, botCount); // Calls addBotsToLobby from addBotsToLobby.js
+  await addBotsToLobby(gameId, botCount);
+}
 });
