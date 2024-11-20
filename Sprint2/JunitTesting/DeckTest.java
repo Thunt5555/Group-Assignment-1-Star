@@ -14,14 +14,14 @@ public class DeckTest {
             System.out.print(temp.deck_of_cards.get(i).rank + " of ");
             System.out.print(temp.deck_of_cards.get(i).suit + "\n");
         }
-        Assert.assertEquals("Ace", temp.deck_of_cards.get(12).rank);
-        Assert.assertEquals("Hearts",temp.deck_of_cards.get(12).suit);
-        Assert.assertEquals("Ace",temp.deck_of_cards.get(25).rank);
-        Assert.assertEquals("Clubs",temp.deck_of_cards.get(25).suit);
-        Assert.assertEquals("Ace",temp.deck_of_cards.get(38).rank);
-        Assert.assertEquals("Diamonds",temp.deck_of_cards.get(38).suit);
-        Assert.assertEquals("Ace",temp.deck_of_cards.get(51).rank);
-        Assert.assertEquals("Spades",temp.deck_of_cards.get(51).suit);
+        Assert.assertEquals("Ace", temp.deck_of_cards.get(0).rank);
+        Assert.assertEquals("Hearts",temp.deck_of_cards.get(0).suit);
+        Assert.assertEquals("Ace",temp.deck_of_cards.get(13).rank);
+        Assert.assertEquals("Clubs",temp.deck_of_cards.get(13).suit);
+        Assert.assertEquals("Ace",temp.deck_of_cards.get(26).rank);
+        Assert.assertEquals("Diamonds",temp.deck_of_cards.get(26).suit);
+        Assert.assertEquals("Ace",temp.deck_of_cards.get(39).rank);
+        Assert.assertEquals("Spades",temp.deck_of_cards.get(39).suit);
     }
 
     //Designed to check and make sure cards were not overwritten
@@ -53,6 +53,11 @@ public class DeckTest {
         Assert.assertEquals(13,counterhearts);
         Assert.assertEquals(13,counterspades);
         Assert.assertEquals(13,counterdiamonds);
+        for(int i = 0;i<52;i++) {
+            System.out.print(temp.deck_of_cards.get(i).rank + " of ");
+            System.out.print(temp.deck_of_cards.get(i).suit + "\n");
+        }
+
 
     }
 }

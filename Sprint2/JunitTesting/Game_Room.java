@@ -3,10 +3,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Game_Room {
     Card_Deck House_Deck = new Card_Deck();
     ArrayList<Player> Current_Players = new ArrayList<Player>();
     ArrayList<ArrayList<PlayingCard>> Current_Pile = new ArrayList<ArrayList<PlayingCard>>();
+    String rank_ordering[] = {"Ace" ,"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
     public void Deal(){
         House_Deck.initDeck();
@@ -17,20 +19,39 @@ public class Game_Room {
         }
     }
 
+    public ArrayList<PlayingCard> BS_Grab(){
+        return Current_Pile.get(Current_Pile.size() -1);
+    }
 
+    public boolean Current_Pile_Check(){
+        return Current_Pile.isEmpty();
+    }
 
-    public void Play_Cards(int player){
-        for(int i = 0;i<Current_Players.get(player).Choices_ToPlay.size();i++){
-            Current_Pile.add(Current_Players.get(player).Choices_ToPlay);
+    public void Sort_Higher(){
+        for(int i = 0;i<Current_Players.size();i++){
+            Current_Players.get(i).Sort_Hand();
         }
     }
 
-    public int Print_Pile(){
+
+
+    public void Play_Cards(Player player){
+        ArrayList<PlayingCard> temp = new ArrayList<>();
+        for(int i = 0;i<player.Choices_ToPlay.size();i++){
+            temp.add(player.Choices_ToPlay.get(i));
+        }
+        Current_Pile.add(temp);
+        player.Choices_ToPlay.clear();
+
+    }
+
+    public int Print_Pile() {
         int num = 0;
-        for(int i = 0;i<Current_Pile.size();i++){
-            for(int j = 0;j<Current_Pile.get(i).size();j++)
-                System.out.print(Current_Pile.get(i).get(j));
+        for (int i = 0; i < Current_Pile.size(); i++) {
+            for (int j = 0; j < Current_Pile.get(i).size(); j++) {
+                System.out.print(Current_Pile.get(i).get(j).Get_Rank() + " of " + Current_Pile.get(i).get(j).Get_Suit() + "\n");
                 num += 1;
+            }
         }
         return num;
     }
@@ -42,8 +63,9 @@ public class Game_Room {
                 return i;
             }
         }
-        return 7;
+        return 10;
     }
+
 
 
 

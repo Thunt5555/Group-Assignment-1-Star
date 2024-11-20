@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PlayerTest Coverage Results, All in Group-Assignment-1-Star Coverage Results, Game_Room_Test Coverage Results, DeckTest Coverage Results, CardTest.TestPlayingCardRank Coverage Results</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">PlayerTest.java</span></div><h1>PlayerTest.java</h1><pre class="source lang-java linenums">import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+<span class="fc" id="L6">class PlayerTest {</span>
+
+<span class="fc" id="L8">    Player temp = new Player(&quot;Carl&quot;);</span>
+
+
+    @Test
+    void printName() {
+<span class="fc" id="L13">        Assert.assertEquals(&quot;Carl&quot;,temp.name);</span>
+<span class="fc" id="L14">    }</span>
+
+    @Test
+    void card_AppendChoice() {
+<span class="fc" id="L18">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Spades&quot;));</span>
+<span class="fc" id="L19">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Hearts&quot;));</span>
+<span class="fc" id="L20">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Clubs&quot;));</span>
+<span class="fc" id="L21">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Diamonds&quot;));</span>
+<span class="fc" id="L22">        temp.Card_AppendChoice(2);</span>
+<span class="fc" id="L23">        Assert.assertEquals(3,temp.Hand.size());</span>
+<span class="fc" id="L24">    }</span>
+
+    @Test
+    void displayHand() {
+<span class="fc" id="L28">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Spades&quot;));</span>
+<span class="fc" id="L29">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Hearts&quot;));</span>
+<span class="fc" id="L30">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Clubs&quot;));</span>
+<span class="fc" id="L31">        temp.Hand.add(new PlayingCard(&quot;Ace&quot;,&quot;Diamonds&quot;));</span>
+<span class="fc" id="L32">        Assert.assertEquals(4,temp.DisplayHand());</span>
+<span class="fc" id="L33">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

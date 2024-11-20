@@ -4,6 +4,16 @@ import { signIn, signUp, signInGuest, showMainMenu } from './auth.js';
 import { db } from './firebase.js';
 import { ref, set, onChildAdded } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
+
+
+function testdbdb(){
+    alert("ran test");
+    console.log("entered here");
+
+}
+document.getElementById("Add ping").addEventListener("click", testdbdb);
+
+
 // Send message function
 function sendMessage(e) {
     e.preventDefault();
@@ -21,6 +31,7 @@ function sendMessage(e) {
         message,
     });
 }
+
 
 document.getElementById("message-form").addEventListener("submit", sendMessage);
 

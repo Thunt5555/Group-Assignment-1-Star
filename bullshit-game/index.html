@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bullshit Online Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="mainMenu.css">
+    <link rel="stylesheet" href="friends.css">
+    <link rel="stylesheet" href="animations.css">
+
     <!-- Load JS files -->
     <script type="module" src="firebase.js" defer></script>
     <script type="module" src="auth.js" defer></script>
@@ -12,8 +17,15 @@
 </head>
 <body>
 
-    <div id="contentWrapper">
-        <div id="authSection">
+    <div id="homeScreen"> <!-- Full screen background -->
+        <div class="slideshow-container"> 
+            <img src="images/bold.webp" class="slideshow-image active" alt="Slideshow Image 1">
+            <img src="images/class.webp" class="slideshow-image" alt="Slideshow Image 2">
+            <img src="images/w.webp" class="slideshow-image" alt="Slideshow Image 3">
+            <img src="images/scream.webp" class="slideshow-image" alt="Slideshow Image 4">
+        </div>
+
+        <div id="authSection"> <!-- Auth section on top of the images -->
             <h2>Sign Up</h2>
             <form id="signupForm">
                 <label for="email">Email:</label>
@@ -39,6 +51,7 @@
 
         <button id="guestButton" type="button">Guest</button>
 
+        <!-- Other sections remain unchanged -->
         <!-- Main Menu: Hidden until login -->
         <div id="mainMenu" style="display:none;">
             <h1>Welcome! <br>Bullshit Online Game!</h1>
@@ -48,26 +61,14 @@
         <!-- Friends Menu: displays after login -->
         <div id="friendsMenu" style="display:none;">
             <h2>Friends Management</h2>
-            
-            <!-- View Friends Button -->
             <button id="viewFriendsButton">View Friends</button>
-            
-            <!-- Add Friends Button -->
             <button id="addFriendsButton">Add Friends</button>
-            
-            <!-- Friend Requests Button -->
             <button id="friendRequestsButton">Friend Requests</button>
-            
-            <!-- Friend List -->
             <div id="friendsListSection" style="display:none;">
                 <h3>Your Friends</h3>
-                <ul id="friendsList">
-                    <!-- Friends will be listed here -->
-                </ul>
+                <ul id="friendsList"></ul>
                 <button id="backToFriendsMenuButton">Back</button>
             </div>
-
-            <!-- Add Friend -->
             <div id="addFriendSection" style="display:none;">
                 <h3>Add Friend</h3>
                 <label for="friendEmail">Enter Friend's Email:</label>
@@ -75,16 +76,11 @@
                 <button id="sendFriendRequestButton">Send Friend Request</button>
                 <button id="backToFriendsMenuButtonFromAdd">Back</button>
             </div>
-
-            <!-- Friend Requests -->
             <div id="friendRequestsSection" style="display:none;">
                 <h3>Friend Requests</h3>
-                <ul id="friendRequestsList">
-                    <!-- Friend requests will be listed here -->
-                </ul>
+                <ul id="friendRequestsList"></ul>
                 <button id="backToFriendsMenuButtonFromRequests">Back</button>
             </div>
-
             <button id="mainMenuButton">Go Back to Main Menu</button>
         </div>
     </div>

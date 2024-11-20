@@ -88,7 +88,7 @@
   </div>
 
     <!-- Friends Menu - Hidden by default -->
-  <div id="chatMenu" style="display:none;">
+    <div id="chatMenu" style="display:none;">
     <h2>Messages</h2>
     <button id="backToMainButton">Go Back</button>
     <!-- messages will display here -->
@@ -96,10 +96,21 @@
 
     <!-- form to send message -->
     <form id="message-form">
-      <input id="message-input" type="text" />
-      <button id="message-btn" type="submit">Send</button>
+        <input id="message-input" type="text" />
+        <button id="message-btn" type="submit">Send</button>
     </form>
-  </div>
+    </div>
+      
+    <div id="privateChat">
+    <!-- Private messages will be displayed here -->
+
+    <form id="private-message-form">
+        <input type="text" id="recipient-input" placeholder="Recipient Email" required />
+        <input type="text" id="message-input" placeholder="Type your message..." required />
+        <button type="submit">Send</button>
+    </form>
+    </div>
+      
 
     <!-- scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
