@@ -140,47 +140,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function sendPrivateMessage(e) {
     e.preventDefault();
-
+  
     const timestamp = Date.now();
     const messageInput = document.getElementById("message-input");
     const recipientInput = document.getElementById("recipient-input");
-    const message = messageInput.value;
+    const message = messageInput.value.trim();
     const recipient = recipientInput.value.trim();
-    const sender = auth.currentUser.email;
-
+    const sender = auth.currentUser ? auth.currentUser.email : null;
+  
+    if (!sender) {
+      console.error("User is not authenticated.");
+      alert("You must be logged in to send messages.");
+      return;
+    }
+  
     if (!recipient) {
       alert("Please specify a recipient.");
       return;
     }
-
+  
     if (!message) {
       alert("Message cannot be empty.");
       return;
     }
-
+  
+    console.log("Timestamp:", timestamp);
+    console.log("Message:", message);
+    console.log("Recipient:", recipient);
+    console.log("Sender:", sender);
+  
     messageInput.value = "";
-
-    const conversationId = sender < recipient ? `${sender}_${recipient}` : `${recipient}_${sender}`;
-
+  
+    const conversationId =
+      sender < recipient ? `${sender}_${recipient}` : `${recipient}_${sender}`;
+    console.log("Conversation ID:", conversationId);
+  
     set(ref(db, `privateMessages/${conversationId}/${timestamp}`), {
       sender,
       recipient,
       message,
       timestamp,
     })
-        .then(() => {
-          console.log("Message sent successfully!");
-          document
-              .getElementById("privateChat")
-              .scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-        })
-        .catch((error) => {
-          console.error("Error sending message:", error);
-          alert("Failed to send message.");
-        });
+      .then(() => {
+        console.log("Message sent successfully!");
+        document
+          .getElementById("privateChat")
+          .scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+        alert("Failed to send message.");
+      });
   }
+  
+  document.getElementById("private-message-form")?.addEventListener("submit", sendPrivateMessage);
 
-  document.getElementById('privateChatButton')?.addEventListener('click', sendPrivateMessage);
+  function showPrivateChatMenu() {
+    const chatMenu = document.getElementById("privateChat");
+    chatMenu.style.display = "block";
+  
+    const username = auth.currentUser?.email || "Guest";
+  
+    const recipientInput = document.getElementById("recipient-input").value.trim();
+    if (!recipientInput) {
+      alert("Please specify a recipient to view the conversation.");
+      return;
+    }
+  
+    const conversationId =
+      username < recipientInput
+        ? `${username}_${recipientInput}`
+        : `${recipientInput}_${username}`;
+  
+    const fetchChat = ref(db, `privateMessages/${conversationId}/`);
+    onChildAdded(fetchChat, (snapshot) => {
+      const message = snapshot.val(); // this should be the message object
+      const sanitizedMessage = document.createElement("li");
+      sanitizedMessage.className = message.sender === username ? "sent" : "receive";
+      sanitizedMessage.innerHTML = `<span>${message.sender}: </span>${message.message}`;
+    
+      document.getElementById("messages").appendChild(sanitizedMessage);
+    });
+    
+  }
+  
+
+  document.getElementById('privateChatButton')?.addEventListener('click', showPrivateChatMenu);
 
   document.getElementById('hostGameButton')?.addEventListener('click', async () => {
     const hostId = auth.currentUser ? auth.currentUser.uid : "guest";

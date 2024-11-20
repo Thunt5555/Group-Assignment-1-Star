@@ -40,6 +40,8 @@
       <h1>Welcome! <br>Bullshit Online Game!</h1>
       <button id="friendsButton">Friends</button>
       <button id="chatButton">Chat</button>
+      <button id="privateChatButton">Direct Message</button>
+
       <!-- Game Section -->
       <div id="gameSection" style="display:none;">
           <h2>Game Options</h2>
@@ -117,25 +119,27 @@
     </form>
     </div>
       
-    <div id="privateChat">
-    <!-- Private messages will be displayed here -->
+    <div id="privateChat" style="display: none;">
+        <ul id="messages">
+          <!-- Chat messages will be dynamically appended here -->
+        </ul>
+        <form id="private-message-form">
+          <input type="text" id="recipient-input" placeholder="Recipient Email" required />
+          <input type="text" id="message-input" placeholder="Type your message..." required />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+               
 
-    <form id="private-message-form">
-        <input type="text" id="recipient-input" placeholder="Recipient Email" required />
-        <input type="text" id="message-input" placeholder="Type your message..." required />
-        <button type="submit">Send</button>
-    </form>
+    <div id="gameScreen" style="display: none;">
+        <h1>Game Room</h1>
+        <p>Game Lobby Game ID: <span id="currentGameId"></span></p>
+        <button id="startGameButton">Start Game</button>
     </div>
 
-  <div id="gameScreen" style="display: none;">
-      <h1>Game Room</h1>
-      <p>Game Lobby Game ID: <span id="currentGameId"></span></p>
-      <button id="startGameButton">Start Game</button>
-  </div>
 
 
-
-  <!-- scripts -->
+    <!-- scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
 
