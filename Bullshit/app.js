@@ -175,3 +175,16 @@ function sendPrivateMessage(e) {
 }
 
 document.getElementById('privateChatButton').addEventListener('click', sendPrivateMessage);
+
+// creating a game
+document.getElementById('hostGameButton').addEventListener('click', async () => {
+  const hostId = auth.currentUser ? auth.currentUser.uid : "guest";
+  await hostGame(hostId);
+});
+
+// joining a game
+document.getElementById('joinGameButton').addEventListener('click', async () => {
+  const gameId = document.getElementById('gameIdInput').value;
+  const playerId = auth.currentUser ? auth.currentUser.uid : "guest";
+  await joinGame(gameId, playerId);
+});
