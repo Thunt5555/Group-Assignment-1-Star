@@ -67,12 +67,15 @@ function signIn(event) {
 
 function showMainMenu() {
   document.getElementById('mainMenu').style.display = 'block';
+  document.getElementById('gameSection').style.display = 'block';
   document.getElementById('signupForm').style.display = 'none';
   document.getElementById('signInForm').style.display = 'none';
   document.querySelector('#authSection h2:nth-of-type(1)').style.display = 'none';
   document.querySelector('#authSection h2:nth-of-type(2)').style.display = 'none';
   document.getElementById('guestButton').style.display = 'none';
 }
+
+
 
 document.getElementById('signInForm').addEventListener('submit', signIn);
 
