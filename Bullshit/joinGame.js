@@ -38,6 +38,10 @@ export async function joinGame(gameId, playerId) {
             await addBotsToLobby(gameId, gameData.maxPlayers - updatedPlayerCount);
         }
 
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        document.getElementById('currentGameId').textContent = gameId;
+
         alert(`Joined game successfully! Welcome, player ${playerId}`);
         console.log(`Player ${playerId} joined game ${gameId}`);
     } catch (error) {
