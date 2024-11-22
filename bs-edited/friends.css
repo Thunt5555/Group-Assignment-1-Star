@@ -1,0 +1,100 @@
+/* General styling for friend request and add friend sections */
+#friendRequestsSection,
+#addFriendSection,
+#friendsListSection {
+    display: none; /* Hidden by default */
+    position: absolute; /* Use absolute positioning for left alignment */
+    top: 20px; /* Adjust distance from the top of the page */
+    left: 20px; /* Align to the left with some padding from the edge */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+    color: #fff; /* White text for contrast */
+    padding: 20px;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 18px; /* Large font for visibility */
+}
+
+/* Headers in each section */
+#friendRequestsSection h3,
+#addFriendSection h3,
+#friendsListSection h3 {
+    font-size: 24px; /* Larger font for section headers */
+    color: #ffa500; /* Bright color for headers */
+    margin-bottom: 15px;
+}
+
+/* Input field styling */
+#friendEmail {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Friend requests and friends list items */
+#friendRequestsList li,
+#friendsList li {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+
+/* Button styling within lists */
+#friendRequestsList button,
+#friendsListSection button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: #fff;
+}
+
+/* Accept button styling */
+#friendRequestsList .accept {
+    background-color: #28a745; /* Green for accept */
+}
+
+#friendRequestsList .accept:hover {
+    background-color: #218838;
+}
+
+/* Decline button styling */
+#friendRequestsList .decline {
+    background-color: #dc3545; /* Red for decline */
+}
+
+#friendRequestsList .decline:hover {
+    background-color: #c82333;
+}
+
+/* Back button styling */
+button#backToFriendsMenuButtonFromRequests,
+button#backToMainMenuButtonFromFriendList,
+button#backToMainMenuButtonFromAddList {
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button#backToFriendsMenuButtonFromRequests:hover,
+button#backToMainMenuButtonFromFriendList:hover,
+button#backToMainMenuButtonFromAddList:hover {
+    background-color: #0056b3;
+}
