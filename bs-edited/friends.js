@@ -21,7 +21,7 @@ function addFriendsMenu() {
 // Function to send a friend request
 async function sendFriendRequest(event) {
     event.preventDefault();
-    const friendEmail = document.getElementById('friendEmail').value;
+    const friendEmail = document.getElementById("friendEmail").value;
     const user = auth.currentUser;
 
     if (!user) {
@@ -40,11 +40,11 @@ async function sendFriendRequest(event) {
             await setDoc(doc(db, "friendRequests", `${user.uid}_${friendUid}`), {
                 sender: user.uid,
                 recipient: friendUid,
-                status: "pending"
+                status: "pending",
             });
 
             alert(`Friend request sent to ${friendEmail}`);
-            document.getElementById('friendEmail').value = "";
+            document.getElementById("friendEmail").value = "";
         } else {
             alert("No user found with that email address.");
         }
@@ -148,7 +148,7 @@ async function displayFriendsList() {
     }
 
     const friendsList = document.getElementById("friendsList");
-    friendsList.innerHTML = "";
+    friendsList.innerHTML = ""; // Clear old list
 
     try {
         const userRef = doc(db, "users", user.uid);
@@ -170,6 +170,18 @@ async function displayFriendsList() {
                     const friendData = friendDoc.data();
                     const li = document.createElement("li");
                     li.textContent = `Friend: ${friendData.username} (${friendData.email})`;
+
+                    // Add Remove button
+                    const removeButton = document.createElement("button");
+                    removeButton.textContent = "Remove";
+                    removeButton.classList.add("remove-button"); // Apply CSS class for styling
+                    removeButton.addEventListener("click", () => {
+                        if (confirm(`Are you sure you want to remove ${friendData.username}?`)) {
+                            removeFriend(friendUid);
+                        }
+                    });
+
+                    li.appendChild(removeButton);
                     friendsList.appendChild(li);
                 } else {
                     console.error(`Friend document not found for UID: ${friendUid}`);
@@ -184,6 +196,38 @@ async function displayFriendsList() {
     }
 }
 
+
+// Function to remove a friend
+async function removeFriend(friendUid) {
+    const user = auth.currentUser;
+
+    if (!user) {
+        alert("You must be signed in to remove friends.");
+        return;
+    }
+
+    try {
+        // Remove friendUid from the current user's friends list
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+            friends: arrayRemove(friendUid),
+        });
+
+        // Remove current user's UID from the friend's friends list
+        const friendRef = doc(db, "users", friendUid);
+        await updateDoc(friendRef, {
+            friends: arrayRemove(user.uid),
+        });
+
+        alert("Friend removed successfully.");
+        displayFriendsList(); // Refresh the friends list
+    } catch (error) {
+        console.error("Error removing friend:", error);
+        alert("Error removing friend.");
+    }
+}
+
+
 // Attach event listeners when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("buttonAddFriends").addEventListener("click", addFriendsMenu);
@@ -192,6 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
         showSection("friendsListSection");
         displayFriendsList();
     });
+    document.getElementById("sendFriendRequestButton").addEventListener("click", sendFriendRequest);
+
 
     document.getElementById("viewFriendRequestsButton").addEventListener("click", () => {
         showSection("friendRequestsSection");
@@ -210,7 +256,5 @@ document.addEventListener("DOMContentLoaded", () => {
         showSection("mainMenu");
     });
 });
-
-
 
 export { sendFriendRequest, acceptFriendRequest, declineFriendRequest, retrieveFriendRequests };
