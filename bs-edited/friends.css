@@ -125,3 +125,37 @@ button.remove-button:hover {
         margin-top: 10px;
     }
 }
+
+/* Accept button styling */
+button.accept-button {
+    background-color: #28a745; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+button.accept-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Decline button styling */
+button.decline-button {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+button.decline-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}

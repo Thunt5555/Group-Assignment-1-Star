@@ -1,6 +1,6 @@
 // Import necessary objects and functions from firebase.js
 import { auth, db } from "./firebase.js";
-import { setDoc, doc, getDoc, getDocs, collection, updateDoc, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { setDoc, arrayRemove, doc, getDoc, getDocs, collection, updateDoc, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Centralized function to toggle sections
 function showSection(sectionId) {
@@ -64,17 +64,29 @@ async function acceptFriendRequest(request) {
     }
 
     try {
+        // Update friend request status to "accepted"
+
         const requestRef = doc(db, "friendRequests", `${request.sender}_${request.recipient}`);
         await updateDoc(requestRef, { status: "accepted" });
-
+        
+        // Update friends list for both users
         const userRef = doc(db, "users", user.uid);
         const friendRef = doc(db, "users", request.sender);
 
         await updateDoc(userRef, { friends: arrayUnion(request.sender) });
         await updateDoc(friendRef, { friends: arrayUnion(user.uid) });
 
-        alert(`Friend request accepted from ${request.sender}`);
-        retrieveFriendRequests();
+    // Fetch the friend's details for the confirmation alert
+    const friendDoc = await getDoc(friendRef);
+    if (friendDoc.exists()) {
+        const friendData = friendDoc.data();
+        const friendName = friendData.username || friendData.email.split("@")[0]; // Use username or part of email
+        alert(`Friend request accepted from ${friendName}`);
+    } else {
+        alert("Friend request accepted, but the sender's details could not be retrieved.");
+    }        
+    
+    retrieveFriendRequests();
     } catch (error) {
         console.error("Error accepting friend request:", error);
         alert("Error accepting friend request.");
@@ -87,13 +99,24 @@ async function declineFriendRequest(request) {
         const requestRef = doc(db, "friendRequests", `${request.sender}_${request.recipient}`);
         await updateDoc(requestRef, { status: "declined" });
 
-        alert(`Friend request declined from ${request.sender}`);
-        retrieveFriendRequests();
+        // Fetch the friend's details for the confirmation alert
+        const friendRef = doc(db, "users", request.sender);
+        const friendDoc = await getDoc(friendRef);
+        if (friendDoc.exists()) {
+            const friendData = friendDoc.data();
+            const friendName = friendData.username || friendData.email.split("@")[0]; // Use username or part of email
+            alert(`Friend request declined from ${friendName}`);
+        } else {
+            alert("Friend request declined, but the sender's details could not be retrieved.");
+        }
+
+        retrieveFriendRequests(); // Refresh the friend requests list
     } catch (error) {
         console.error("Error declining friend request:", error);
         alert("Error declining friend request.");
     }
 }
+
 
 // Function to retrieve friend requests
 function retrieveFriendRequests() {
@@ -108,35 +131,55 @@ function retrieveFriendRequests() {
     friendRequestsList.innerHTML = ""; // Clear old list
 
     getDocs(query(collection(db, "friendRequests"), where("recipient", "==", user.uid), where("status", "==", "pending")))
-        .then((querySnapshot) => {
+        .then(async (querySnapshot) => {
             if (querySnapshot.empty) {
                 friendRequestsList.innerHTML = "<li>No friend requests at the moment.</li>";
                 return;
             }
 
-            querySnapshot.forEach((doc) => {
-                const request = doc.data();
-                const li = document.createElement("li");
-                li.textContent = `Friend request from: ${request.sender}`;
+            for (const docSnapshot of querySnapshot.docs) {
+                const request = docSnapshot.data();
+                const senderUid = request.sender;
 
-                const acceptButton = document.createElement("button");
-                acceptButton.textContent = "Accept";
-                acceptButton.onclick = () => acceptFriendRequest(request);
+                try {
+                    // Fetch sender's details
+                    const senderRef = doc(db, "users", senderUid);
+                    const senderDoc = await getDoc(senderRef);
 
-                const declineButton = document.createElement("button");
-                declineButton.textContent = "Decline";
-                declineButton.onclick = () => declineFriendRequest(request);
+                    let senderName = senderUid; // Default to UID if details cannot be retrieved
+                    if (senderDoc.exists()) {
+                        const senderData = senderDoc.data();
+                        senderName = senderData.username || senderData.email.split("@")[0];
+                    }
 
-                li.appendChild(acceptButton);
-                li.appendChild(declineButton);
-                friendRequestsList.appendChild(li);
-            });
+                    const li = document.createElement("li");
+                    li.textContent = `Friend request from: ${senderName}`;
+
+                    const acceptButton = document.createElement("button");
+                    acceptButton.textContent = "Accept";
+                    acceptButton.classList.add("accept-button"); // Add green styling
+                    acceptButton.onclick = () => acceptFriendRequest(request);
+
+                    const declineButton = document.createElement("button");
+                    declineButton.textContent = "Decline";
+                    declineButton.classList.add("decline-button"); // Add red styling
+                    declineButton.onclick = () => declineFriendRequest(request);
+
+                    li.appendChild(acceptButton);
+                    li.appendChild(declineButton);
+                    friendRequestsList.appendChild(li);
+                } catch (error) {
+                    console.error(`Error fetching sender details for UID: ${senderUid}`, error);
+                }
+            }
         })
         .catch((error) => {
             console.error("Error fetching friend requests:", error);
             alert("Error fetching friend requests.");
         });
 }
+
+
 
 // Function to display friends list
 async function displayFriendsList() {
