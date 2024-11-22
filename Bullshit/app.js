@@ -142,10 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
   
     const timestamp = Date.now();
-    const messageInput = document.getElementById("message-input");
+    const messageInput = document.getElementById("pm-input");
     const recipientInput = document.getElementById("recipient-input");
-    const message = messageInput.value.trim();
-    const recipient = recipientInput.value.trim();
+    //const message = messageInput.value.trim();
+    //const recipient = recipientInput.value.trim();
     const sender = auth.currentUser ? auth.currentUser.email : null;
   
     if (!sender) {
@@ -164,8 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
   
-    console.log("Timestamp:", timestamp);
-    console.log("Message:", message);
+    //console.log("Timestamp:", timestamp);
+    console.log("Message:", messageInput);
     console.log("Recipient:", recipient);
     console.log("Sender:", sender);
   
@@ -175,11 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
       sender < recipient ? `${sender}_${recipient}` : `${recipient}_${sender}`;
     console.log("Conversation ID:", conversationId);
   
-    set(ref(db, `privateMessages/${conversationId}/${timestamp}`), {
+    set(ref(db, `privateMessages/${conversationId}`), { ///${timestamp}`), {
       sender,
       recipient,
       message,
-      timestamp,
+      //timestamp,
     })
       .then(() => {
         console.log("Message sent successfully!");
@@ -193,7 +193,30 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
   
-  document.getElementById("private-message-form")?.addEventListener("submit", sendPrivateMessage);
+  document.getElementById("private-message-form")?.addEventListener("submit", sendPrivateMessageTwo);
+
+  function sendPrivateMessageTwo(e) {
+    e.preventDefault();
+
+    const timestamp = Date.now();
+    const messageInput = document.getElementById("pm-input");
+    const message = messageInput.value;
+    const username = auth.currentUser.email || "Guest";
+    const recipientInput = document.getElementById("recipient-input");
+    const recipient = recipientInput.value;
+
+    messageInput.value = "";
+
+    document
+        .getElementById("pms")
+        .scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+
+    set(ref(db, "privateMessages/" + timestamp), {
+      username,
+      message,
+      recipient,
+    });
+  }
 
   function showPrivateChatMenu() {
     const chatMenu = document.getElementById("privateChat");
@@ -219,13 +242,33 @@ document.addEventListener('DOMContentLoaded', () => {
       sanitizedMessage.className = message.sender === username ? "sent" : "receive";
       sanitizedMessage.innerHTML = `<span>${message.sender}: </span>${message.message}`;
     
-      document.getElementById("messages").appendChild(sanitizedMessage);
+      document.getElementById("pms").appendChild(sanitizedMessage);
     });
     
   }
   
+  function showPrivateChatMenuTwo() {
+    const chatMenu = document.getElementById('privateChat');
+    chatMenu.style.display = 'block';
 
-  document.getElementById('privateChatButton')?.addEventListener('click', showPrivateChatMenu);
+    const username = auth.currentUser.email || "Guest";
+
+    const fetchChat = ref(db, "privateMessages/");
+    onChildAdded(fetchChat, (snapshot) => {
+      const messages = snapshot.val();
+  
+      // Check if the recipient email matches the logged-in user's email
+      if (messages.recipient === username) {
+        const message = `<li class=${
+          username === messages.username ? "sent" : "receive"
+      }><span>${messages.username}: </span>${messages.message}</li>`;
+        document.getElementById("pms").innerHTML += message;
+      }
+    });
+  }
+  
+
+  document.getElementById('privateChatButton')?.addEventListener('click', showPrivateChatMenuTwo);
 
   document.getElementById('hostGameButton')?.addEventListener('click', async () => {
     const hostId = auth.currentUser ? auth.currentUser.uid : "guest";
@@ -252,4 +295,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     await addBotsToLobby(gameId, botCount);
   });
+
+  const backButtonChatMenu = document.getElementById('backToMainButton');
+  backButtonChatMenu.addEventListener("click", function () { 
+    // Hide the friends list section on back button click
+    document.getElementById('chatMenu').style.display = 'none';
+});
+
 });
