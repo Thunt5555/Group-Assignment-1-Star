@@ -78,16 +78,21 @@
         <button id="backToAddFriendsButton">Back to Add Friends</button>
     </div>
 
-    <!-- Chat Menu -->
-    <div id="chatMenu" style="display:none;">
-        <h2>Messages</h2>
-        <button id="backToMainButton">Go Back</button>
-        <ul id="messages"></ul>
-        <form id="message-form">
-            <input id="message-input" type="text" />
-            <button id="message-btn" type="submit">Send</button>
-        </form>
+    <!-- Chat Section -->
+    <div id="chatSection" style="display: none;">
+        <div class="chat-header">
+            <h3>Public Chat</h3>
+            <button id="closeChatButton">Close Chat</button>
+        </div>
+        <div id="messageContainer" class="message-container">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input-container">
+            <input id="chatInput" type="text" placeholder="Type your message..." />
+            <button id="sendChatButton">Send</button>
+        </div>
     </div>
+
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
@@ -95,6 +100,8 @@
     <script type="module" src="firebase.js" defer></script>
     <script type="module" src="auth.js" defer></script>
     <script type="module" src="friends.js" defer></script>
+    <script type="module" src="chat.js" defer></script>
+
 
 </body>
 </html>
