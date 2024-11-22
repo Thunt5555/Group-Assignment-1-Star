@@ -105,7 +105,7 @@
       <button id="mainMenuButton">Go Back to Main Menu</button>
   </div>
 
-    <!-- Friends Menu - Hidden by default -->
+    <!-- Message Menu - Hidden by default -->
     <div id="chatMenu" style="display:none;">
     <h2>Messages</h2>
     <button id="backToMainButton">Go Back</button>
@@ -119,16 +119,17 @@
     </form>
     </div>
       
+    <!-- Private Message Menu - Hidden by default -->
     <div id="privateChat" style="display: none;">
-        <ul id="messages">
+        <ul id="pms">
           <!-- Chat messages will be dynamically appended here -->
         </ul>
         <form id="private-message-form">
           <input type="text" id="recipient-input" placeholder="Recipient Email" required />
-          <input type="text" id="message-input" placeholder="Type your message..." required />
+          <input type="text" id="pm-input" placeholder="Type your message..." required />
           <button type="submit">Send</button>
         </form>
-      </div>
+    </div>
                
 
     <div id="gameScreen" style="display: none;">
