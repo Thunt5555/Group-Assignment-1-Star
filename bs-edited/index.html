@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="mainMenu.css">
     <link rel="stylesheet" href="friends.css">
     <link rel="stylesheet" href="animations.css">
-    <script type="module" src="main.js" defer></script> <!-- Main entry point for your app -->
-    <script src="friends.js"></script>
-    <script src="auth.js"></script>
+    <script type="module" src="main.js" defer></script>
 </head>
 <body>
 
+    <!-- Authentication Section -->
     <div id="authSection" class="auth-container">
+        <!-- Login Form -->
         <form id="loginForm" onsubmit="handleAuth(event)">
             <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="password" placeholder="Password" required>
@@ -23,7 +23,6 @@
             <button type="button" id="guestButton">Play as Guest</button>
         </form>
 
-    
         <div id="loginLinks">
             <p><a href="forgot-password.html">Forgot password?</a></p>
             <p>Don’t have an account? <button id="buttonSetSigningUp">Sign Up Now</button></p>
@@ -37,14 +36,13 @@
             <button type="button" onclick="toggleSignUp()">Cancel</button>
         </form>
 
-    
         <div class="explore-section">
             <button id="rulesButton" onclick="window.open('https://gamerules.com/rules/bullshit-card-game/', '_blank')">Bullshit Rules</button>
             <button id="contactButton" onclick="window.location.href='mailto:support@bullshitgame.com'">Contact Support</button>
         </div>
     </div>
-    
-    <!-- Main Menu: Hidden until login -->
+
+    <!-- Main Menu -->
     <div id="mainMenu" style="display:none;">
         <h1>Welcome! <br>Bullshit Online Game!</h1>
         <button id="friendsButton">Friends</button>
@@ -61,25 +59,26 @@
         <button id="backToMainMenuButtonFromFriendList">Back</button>
     </div>
 
-    <!-- Add Friend Section (initially hidden) -->
+    <!-- Add Friend Section -->
     <div id="addFriendSection" style="display:none;">
         <h3>Add Friend</h3>
         <label for="friendEmail">Enter Friend's Email:</label>
         <input type="email" id="friendEmail" required>
         <button id="sendFriendRequestButton">Send Friend Request</button>
+        <button id="viewFriendRequestsButton">View Friend Requests</button>
         <button id="backToMainMenuButtonFromAddList">Back</button>
     </div>
 
-    <!-- Friend Requests -->
+    <!-- Friend Requests Section -->
     <div id="friendRequestsSection" style="display:none;">
         <h3>Friend Requests</h3>
         <ul id="friendRequestsList">
             <!-- Friend requests will be listed here -->
         </ul>
-        <button id="backToFriendsMenuButtonFromRequests">Back</button>
+        <button id="backToAddFriendsButton">Back to Add Friends</button>
     </div>
 
-    <!-- Chat Menu - Hidden by default -->
+    <!-- Chat Menu -->
     <div id="chatMenu" style="display:none;">
         <h2>Messages</h2>
         <button id="backToMainButton">Go Back</button>
@@ -90,17 +89,12 @@
         </form>
     </div>
 
-    <!-- Include Firebase SDKs -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
-
-    <!-- Include your JavaScript files -->
     <script type="module" src="firebase.js" defer></script>
     <script type="module" src="auth.js" defer></script>
     <script type="module" src="friends.js" defer></script>
-    <script type="module" src="main.js" defer></script>
 
 </body>
 </html>
-
-
