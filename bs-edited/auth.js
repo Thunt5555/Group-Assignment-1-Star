@@ -9,11 +9,9 @@ let isSigningUp = false;
 function handleLogin(event) {
     event.preventDefault(); // Prevent default form submission
 
-    // Get the email and password from input fields
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Call Firebase sign-in function
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -21,7 +19,13 @@ function handleLogin(event) {
             showMainMenu(); // Show the main menu after successful login
         })
         .catch((error) => {
-            alert("Error: " + error.message); // Handle errors
+            if (error.code === "auth/user-not-found") {
+                alert("No user found with this email. Please sign up first.");
+            } else if (error.code === "auth/wrong-password") {
+                alert("Incorrect password. Please try again.");
+            } else {
+                alert("Error: " + error.message);
+            }
         });
 }
 
@@ -30,7 +34,7 @@ async function signUp(event) {
     event.preventDefault();
     const email = document.getElementById('emailSignup').value;
     const password = document.getElementById('passwordSignup').value;
-    const avatar = "default-avatar.png"; // Set a default avatar or allow user to choose
+    const avatar = "images/OIP.jpg"; // Fixed avatar path
 
     if (password.length > 256) {
         alert("Password is too long. Maximum length is 256 characters.");
@@ -40,71 +44,50 @@ async function signUp(event) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        console.log(user.email)
 
-        // Add user data to the 'users' collection in Firestore
-        await setDoc(doc(db, 'users', user.email), {
+        // Save user data in Firestore using UID as the document ID
+        await setDoc(doc(db, 'users', user.uid), {
+            uid: user.uid,
             email: user.email,
-            username: email.split('@')[0], // Create a default username based on email
+            username: email.split('@')[0], // Default username based on email
             avatar: avatar,
-            friends: [], // Initialize with an empty friends array
+            friends: [], // Initialize empty friends list
+            status: "offline" // Default status
         });
 
         alert("User signed up successfully: " + user.email);
-        showMainMenu(); // Optionally show main menu after signup
+        showMainMenu();
     } catch (error) {
-        alert("Error: " + error.message);
+        if (error.code === "auth/email-already-in-use") {
+            alert("This email is already in use. Please try logging in.");
+        } else if (error.code === "auth/weak-password") {
+            alert("Your password is too weak. Please choose a stronger password.");
+        } else {
+            alert("Error: " + error.message);
+        }
     }
 }
-
-
 
 function setBool() {
     isSigningUp = !isSigningUp;
     document.getElementById('signupForm').style.display = isSigningUp ? 'block' : 'none';
     document.getElementById('loginForm').style.display = isSigningUp ? 'none' : 'block';
     document.getElementById('loginLinks').style.display = isSigningUp ? 'none' : 'block'; // Hide or show the login links
-
 }
-
 
 function handleAuth(event) {
     console.log("called auth with", isSigningUp);
     isSigningUp ? signUp(event) : handleLogin(event);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    const button = document.getElementById("buttonSetSigningUp");
-    button.addEventListener("click", setBool)
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("buttonSetSigningUp").addEventListener("click", setBool);
 });
 
 function toggleSignUp() {
-    // Directly show login form and hide sign-up form
     document.getElementById('signupForm').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('loginLinks').style.display = 'block'; // Show login links again
-}
-
-// Sign in function
-function signIn(event) {
-    event.preventDefault();
-    const email = document.getElementById('emailSignIn').value;
-    const password = document.getElementById('passwordSignIn').value;
-
-    if (password.length > 256) {
-        alert("Password is too long. Maximum allowed length is 256 characters.");
-        return;
-    }
-
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            alert("User signed in successfully: " + user.email);
-            showMainMenu(); // Show main menu on successful sign-in
-        })
-        .catch((error) => {
-            alert("Error: " + error.message); // Handle errors
-        });
 }
 
 // Guest sign-in function
