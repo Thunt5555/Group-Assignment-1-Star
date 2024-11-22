@@ -1,6 +1,6 @@
 // Import necessary objects and functions from firebase.js
-import { auth, db } from "./firebase.js"; // Use db for Firestore
-import { query, where, setDoc, doc, getDoc, getDocs, collection, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { auth, db } from "./firebase.js"; // Use db for Firestore as set up in firebase.js
+import { setDoc, doc, getDoc, getDocs, collection, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Centralized function to toggle sections
 function showSection(sectionId) {
@@ -67,55 +67,19 @@ async function sendFriendRequest(event) {
 
 async function acceptFriendRequest(request) {
     const user = auth.currentUser;
-    if (!user) {
-        console.error("No authenticated user found.");
-        return;
-    }
+    if (!user) return;
 
     try {
-        console.log("Accepting friend request:", request);
+        // Update the request status to accepted
+        await updateDoc(doc(db, "friendRequests", `${request.sender}_${request.recipient}`), { // Use db here
+            status: "accepted"
+        });
 
-        // Query to find the matching friend request
-        const q = query(
-            collection(db, "friendRequests"),
-            where("sender", "==", request.sender),
-            where("recipient", "==", request.recipient)
-        );
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-            console.error("No matching friend request found.");
-            alert("Error: Friend request not found.");
-            return;
-        }
+        // Add each other as friends in their respective user documents
+        const userDocRef = doc(db, "users", user.uid); // Use db here
+        const friendDocRef = doc(db, "users", request.sender); // Use db here
 
-        // Get the friend request document reference
-        const docRef = querySnapshot.docs[0].ref;
-
-        // Update friend request status to "accepted"
-        await updateDoc(docRef, { status: "accepted" });
-        console.log("Friend request status updated to 'accepted'.");
-
-        // Query to find the authenticated user's document
-        const userQuery = query(collection(db, "users"), where("email", "==", user.email));
-        const userSnapshot = await getDocs(userQuery);
-        if (userSnapshot.empty) {
-            console.error("No matching user document found for authenticated user.");
-            alert("Error: User document not found.");
-            return;
-        }
-        const userDocRef = userSnapshot.docs[0].ref;
-
-        // Query to find the sender's document
-        const friendQuery = query(collection(db, "users"), where("email", "==", request.sender));
-        const friendSnapshot = await getDocs(friendQuery);
-        if (friendSnapshot.empty) {
-            console.error("No matching user document found for sender.");
-            alert("Error: Sender document not found.");
-            return;
-        }
-        const friendDocRef = friendSnapshot.docs[0].ref;
-
-        // Update the friends list for both users
+        // Update both users' friends lists
         await updateDoc(userDocRef, {
             friends: arrayUnion(request.sender),
         });
@@ -134,46 +98,23 @@ async function acceptFriendRequest(request) {
     }
 }
 
-
-
+// Function to decline a friend request
 async function declineFriendRequest(request) {
     const user = auth.currentUser;
-    if (!user) {
-        console.error("No authenticated user found.");
-        return;
-    }
+    if (!user) return;
 
     try {
-        console.log("Declining friend request:", request);
-
-        // Query to find the matching friend request
-        const q = query(
-            collection(db, "friendRequests"),
-            where("sender", "==", request.sender),
-            where("recipient", "==", request.recipient)
-        );
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-            console.error("No matching friend request found.");
-            alert("Error: Friend request not found.");
-            return;
-        }
-
-        // Get the friend request document reference
-        const docRef = querySnapshot.docs[0].ref;
-
-        // Update friend request status to "declined"
-        await updateDoc(docRef, { status: "declined" });
-
+        // Update the request status to declined or remove it
+        await updateDoc(doc(db, "friendRequests", `${request.sender}_${request.recipient}`), { // Use db here
+            status: "declined"
+        });
         alert(`Friend request declined from ${request.sender}`);
-        retrieveFriendRequests(); // Refresh the friend request list
+        retrieveFriendRequests(); // Refresh the list
     } catch (error) {
         console.error("Error declining friend request:", error);
         alert("Error declining friend request.");
     }
 }
-
-
 
 // Function to retrieve friend requests
 function retrieveFriendRequests() {
@@ -214,27 +155,71 @@ function retrieveFriendRequests() {
         });
 }
 
-// Attach event listeners
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("buttonAddFriends").addEventListener("click", addFriendsMenu);
-    document.getElementById("friendsButton").addEventListener("click", retrieveFriendMenu);
 
-    // Back button for "Add Friend" section
-    document.getElementById("backToMainMenuButtonFromAddList").addEventListener("click", () => showSection("mainMenu"));
-
-    // Back button for "Friend Requests" section
-    document.getElementById("backToFriendsMenuButtonFromRequests").addEventListener("click", () => showSection("mainMenu"));
-
-    // Back button for "Friends List" section
-    document.getElementById("backToMainMenuButtonFromFriendList").addEventListener("click", () => showSection("mainMenu"));
-
-    const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
-    if (sendFriendRequestButton) {
-        sendFriendRequestButton.addEventListener("click", sendFriendRequest);
-    } else {
-        console.error("Send Friend Request button not found in the DOM.");
+async function showFriends() {
+    const user = auth.currentUser; // Ensure the user is authenticated
+    if (!user) {
+        alert("You must be signed in to view friends.");
+        return;
     }
+
+    const db = firebase.firestore(); // Initialize Firestore
+    const friendListElement = document.getElementById('friendsList'); // The container for displaying the friends
+
+    try {
+        // Query Firestore for friendRequests with 'accepted' status for the current user
+        const friendsQuery = await db
+            .collection('friendRequests')
+            .where('status', '==', 'accepted')
+            .where('userId', '==', user.uid) // Filter for the current user's friends
+            .get();
+
+        friendListElement.innerHTML = ""; // Clear existing content
+
+        if (friendsQuery.empty) {
+            // Handle no friends found
+            friendListElement.innerHTML = "<p>No friends found.</p>";
+            return;
+        }
+
+        // Iterate through the results and display them
+        friendsQuery.forEach(doc => {
+            const friendData = doc.data();
+            const friendItem = document.createElement('div');
+            friendItem.textContent = `Friend: ${friendData.friendName || "Unknown"}`; // Display friend name
+            friendListElement.appendChild(friendItem);
+        });
+    } catch (error) {
+        console.error("Error fetching friends:", error);
+        alert("Unable to fetch friends at this time.");
+    }
+}
+
+
+// Attach event listeners when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", function() {
+    const sendButton = document.getElementById("buttonAddFriends");
+    const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
+    const backButtonFriendList = document.getElementById('backToMainMenuButtonFromFriendList');
+    const backButtonAddList = document.getElementById('backToMainMenuButtonFromAddList');
+    const retrieveButton = document.getElementById("friendsButton");
+    sendButton.addEventListener("click", addFriendsMenu); // Show the input section on button click
+    retrieveButton.addEventListener("click", retrieveFriendMenu); // Show the current friend requests sent to the user
+    sendFriendRequestButton.addEventListener("click", sendFriendRequest); // Handle sending friend requests
+    backButtonFriendList.addEventListener("click", function() { // Handle the back button
+        document.getElementById('friendsListSection').style.display = 'none';
+    });
+    backButtonAddList.addEventListener("click", function() { // Handle the back button
+        document.getElementById('addFriendSection').style.display = 'none';
+    });
 });
 
-// Export functions
+// In friends.js
+document.getElementById("friendsButton").addEventListener("click", () => {
+    retrieveFriendMenu(); // Show the friendRequestsSection
+    retrieveFriendRequests(); // Load friend requests into the list
+});
+
+
+// Export functions if needed
 export { sendFriendRequest, acceptFriendRequest, declineFriendRequest, retrieveFriendRequests };

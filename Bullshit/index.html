@@ -40,6 +40,24 @@
       <h1>Welcome! <br>Bullshit Online Game!</h1>
       <button id="friendsButton">Friends</button>
       <button id="chatButton">Chat</button>
+      <button id="privateChatButton">Direct Message</button>
+
+      <!-- Game Section -->
+      <div id="gameSection" style="display:none;">
+          <h2>Game Options</h2>
+          <!-- Host Game Button -->
+          <button id="hostGameButton">Host Game</button>
+
+          <!-- Join Game Section -->
+          <h3>Join a Game</h3>
+          <input type="text" id="gameIdInput" placeholder="Enter Game ID" required>
+          <button id="joinGameButton">Join Game</button>
+
+          <!-- Add Bots Button -->
+          <h3>Add Bots</h3>
+          <button id="addBotsButton">Add Bots</button>
+      </div>
+
 
       <!-- add more main menu options for future sprints-->
   </div>
@@ -88,7 +106,7 @@
   </div>
 
     <!-- Friends Menu - Hidden by default -->
-  <div id="chatMenu" style="display:none;">
+    <div id="chatMenu" style="display:none;">
     <h2>Messages</h2>
     <button id="backToMainButton">Go Back</button>
     <!-- messages will display here -->
@@ -96,15 +114,35 @@
 
     <!-- form to send message -->
     <form id="message-form">
-      <input id="message-input" type="text" />
-      <button id="message-btn" type="submit">Send</button>
+        <input id="message-input" type="text" />
+        <button id="message-btn" type="submit">Send</button>
     </form>
-  </div>
+    </div>
+      
+    <div id="privateChat" style="display: none;">
+        <ul id="messages">
+          <!-- Chat messages will be dynamically appended here -->
+        </ul>
+        <form id="private-message-form">
+          <input type="text" id="recipient-input" placeholder="Recipient Email" required />
+          <input type="text" id="message-input" placeholder="Type your message..." required />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+               
+
+    <div id="gameScreen" style="display: none;">
+        <h1>Game Room</h1>
+        <p>Game Lobby Game ID: <span id="currentGameId"></span></p>
+        <button id="startGameButton">Start Game</button>
+    </div>
+
+
 
     <!-- scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
-    <script src="app.js"></script>
+
 
 </body>
 </html>
