@@ -7,21 +7,14 @@ import {
     query,
     orderBy,
     serverTimestamp,
+    doc,
+    getDoc,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-// Display the chat section
-function openChat() {
-    const chatSection = document.getElementById("chatSection");
-    chatSection.style.display = "block";
+// Global unsubscribe for private chat
+let privateChatUnsubscribe;
 
-    loadPublicChat();
-}
-
-// Close the chat section
-function closeChat() {
-    const chatSection = document.getElementById("chatSection");
-    chatSection.style.display = "none";
-}
+// ---------------- PUBLIC CHAT FUNCTIONS -----------------
 
 // Render a single message
 function renderMessage(messageData, isCurrentUser) {
@@ -32,15 +25,15 @@ function renderMessage(messageData, isCurrentUser) {
     return messageDiv;
 }
 
-let unsubscribe; // Global unsubscribe for real-time listener
+let publicChatUnsubscribe; // Global unsubscribe for public chat listener
 
 // Load public chat messages
 function loadPublicChat() {
     const messageContainer = document.getElementById("messageContainer");
     messageContainer.innerHTML = ""; // Clear old messages
 
-    if (unsubscribe) {
-        unsubscribe(); // Unsubscribe from previous listener
+    if (publicChatUnsubscribe) {
+        publicChatUnsubscribe(); // Unsubscribe from previous listener
     }
 
     const messagesQuery = query(
@@ -48,7 +41,7 @@ function loadPublicChat() {
         orderBy("timestamp", "asc")
     );
 
-    unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+    publicChatUnsubscribe = onSnapshot(messagesQuery, (snapshot) => {
         messageContainer.innerHTML = ""; // Clear old messages
         snapshot.forEach((doc) => {
             const messageData = doc.data();
@@ -63,7 +56,7 @@ function loadPublicChat() {
 }
 
 // Send a message to public chat
-async function sendChatMessage() {
+async function sendPublicMessage() {
     const chatInput = document.getElementById("chatInput");
     const message = chatInput.value.trim();
 
@@ -83,11 +76,168 @@ async function sendChatMessage() {
     }
 }
 
-// Attach event listeners
+// ---------------- PRIVATE CHAT FUNCTIONS -----------------
+
+// Load friends for private chat selection
+async function loadFriendsForPrivateChat() {
+    const user = auth.currentUser;
+    if (!user) {
+        alert("You must be signed in to view your friends.");
+        return;
+    }
+
+    const friendsList = document.getElementById("friendListForChat");
+    friendsList.innerHTML = ""; // Clear previous friends
+
+    try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+            const friends = userDoc.data().friends || [];
+            if (friends.length === 0) {
+                friendsList.innerHTML = "<li>You have no friends to chat with.</li>";
+                return;
+            }
+
+            friends.forEach(async (friendUid) => {
+                const friendDoc = await getDoc(doc(db, "users", friendUid));
+                if (friendDoc.exists()) {
+                    const friendData = friendDoc.data();
+                    const li = document.createElement("li");
+                    li.textContent = `${friendData.username || friendData.email.split("@")[0]}`;
+
+                    // Add a "Chat" button for each friend
+                    const chatButton = document.createElement("button");
+                    chatButton.textContent = "Chat";
+                    chatButton.addEventListener("click", () =>
+                        openPrivateChat(friendUid, friendData.username || friendData.email.split("@")[0])
+                    );
+
+                    li.appendChild(chatButton);
+                    friendsList.appendChild(li);
+                }
+            });
+        } else {
+            friendsList.innerHTML = "<li>Error fetching your friends list.</li>";
+        }
+    } catch (error) {
+        console.error("Error loading friends for private chat:", error);
+        alert("Error loading friends for private chat.");
+    }
+}
+
+// Open private chat window with a specific friend
+function openPrivateChat(friendUid, friendName) {
+    document.getElementById("privateChatFriendList").style.display = "none";
+    document.getElementById("privateChatWindow").style.display = "block";
+    document.getElementById("privateChatHeader").textContent = `Chat with ${friendName}`;
+    loadPrivateChat(friendUid);
+}
+
+// Load private chat messages
+async function loadPrivateChat(friendUid) {
+    const privateMessagesContainer = document.getElementById("privateMessages");
+    privateMessagesContainer.innerHTML = ""; // Clear old messages
+
+    if (privateChatUnsubscribe) {
+        privateChatUnsubscribe(); // Unsubscribe from previous listener
+    }
+
+    const chatId = [auth.currentUser.uid, friendUid].sort().join("_");
+    const messagesQuery = query(
+        collection(db, `privateChats/${chatId}/messages`),
+        orderBy("timestamp", "asc")
+    );
+
+    privateChatUnsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+        privateMessagesContainer.innerHTML = ""; // Clear old messages
+        snapshot.forEach((doc) => {
+            const messageData = doc.data();
+            const isCurrentUser = messageData.senderId === auth.currentUser.uid;
+            const messageDiv = renderMessage(messageData, isCurrentUser);
+            privateMessagesContainer.appendChild(messageDiv);
+        });
+
+        // Scroll to the bottom of the chat
+        privateMessagesContainer.scrollTop = privateMessagesContainer.scrollHeight;
+    });
+}
+
+// Send a private message
+async function sendPrivateMessage(friendUid) {
+    const privateMessageInput = document.getElementById("privateMessageInput");
+    const message = privateMessageInput.value.trim();
+
+    if (message === "") return;
+
+    const chatId = [auth.currentUser.uid, friendUid].sort().join("_");
+
+    try {
+        await addDoc(collection(db, `privateChats/${chatId}/messages`), {
+            senderId: auth.currentUser.uid,
+            senderUsername: auth.currentUser.email.split("@")[0],
+            text: message,
+            timestamp: serverTimestamp(),
+        });
+
+        privateMessageInput.value = ""; // Clear input field
+    } catch (error) {
+        console.error("Error sending private message:", error);
+    }
+}
+
+// ---------------- EVENT LISTENERS -----------------
+
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("chatButton").addEventListener("click", openChat);
-    document.getElementById("closeChatButton").addEventListener("click", closeChat);
-    document.getElementById("sendChatButton").addEventListener("click", sendChatMessage);
+    // Open Chat Menu
+    document.getElementById("chatButton").addEventListener("click", () => {
+        document.getElementById("chatMenu").style.display = "block";
+    });
+
+    // Close Chat Menu
+    document.getElementById("closeChatMenuButton").addEventListener("click", () => {
+        document.getElementById("chatMenu").style.display = "none";
+    });
+
+    // Public Chat
+    document.getElementById("publicChatButton").addEventListener("click", () => {
+        document.getElementById("chatMenu").style.display = "none";
+        document.getElementById("chatSection").style.display = "block";
+        loadPublicChat();
+    });
+
+    document.getElementById("closeChatButton").addEventListener("click", () => {
+        document.getElementById("chatSection").style.display = "none";
+        if (publicChatUnsubscribe) publicChatUnsubscribe();
+    });
+
+    document.getElementById("sendChatButton").addEventListener("click", sendPublicMessage);
+
+    // Private Chat
+    document.getElementById("privateChatButton").addEventListener("click", () => {
+        document.getElementById("chatMenu").style.display = "none";
+        document.getElementById("privateChatFriendList").style.display = "block";
+        loadFriendsForPrivateChat();
+    });
+
+    document.getElementById("closePrivateChatFriendListButton").addEventListener("click", () => {
+        document.getElementById("privateChatFriendList").style.display = "none";
+    });
+
+    document.getElementById("closePrivateChatButton").addEventListener("click", () => {
+        document.getElementById("privateChatWindow").style.display = "none";
+        if (privateChatUnsubscribe) privateChatUnsubscribe();
+    });
+
+    document.getElementById("sendPrivateMessageButton").addEventListener("click", () => {
+        const friendUid = document.getElementById("privateChatHeader").getAttribute("data-friend-uid");
+        sendPrivateMessage(friendUid);
+    });
 });
 
-export { openChat, closeChat, sendChatMessage };
+export {
+    loadPublicChat,
+    sendPublicMessage,
+    loadPrivateChat,
+    openPrivateChat,
+    sendPrivateMessage,
+};

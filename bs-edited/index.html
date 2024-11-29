@@ -79,10 +79,44 @@
     </div>
 
     <!-- Chat Section -->
+     
+   <!-- Chat Menu -->
+    <div id="chatMenu" style="display: none;">
+        <h3>Chat Options</h3>
+        <button id="privateChatButton" style="background-color: blue; color: white;">Private Chat</button>
+        <button id="publicChatButton" style="background-color: green; color: white;">Public Chat</button>
+        <button id="closeChatMenuButton">Close</button>
+    </div>
+
+    <!-- Private Chat Friend List -->
+    <div id="privateChatFriendList" style="display: none;">
+        <h3>Click on a Friend to Message</h3>
+        <ul id="friendListForChat">
+            <!-- Friends will be dynamically added here -->
+        </ul>
+        <button id="closePrivateChatFriendListButton">Close</button>
+    </div>
+
+    <!-- Private Chat Window -->
+    <div id="privateChatWindow" style="display: none;">
+        <div class="chat-header">
+            <h3 id="privateChatHeader">Private Chat</h3>
+            <button id="closePrivateChatButton">Close</button>
+        </div>
+        <div id="privateMessages" class="message-container">
+            <!-- Private chat messages will appear here -->
+        </div>
+        <div class="chat-input-container">
+            <input id="privateMessageInput" type="text" placeholder="Type your message..." />
+            <button id="sendPrivateMessageButton">Send</button>
+        </div>
+    </div>
+
+    <!-- Public Chat Window (Existing) -->
     <div id="chatSection" style="display: none;">
         <div class="chat-header">
             <h3>Public Chat</h3>
-            <button id="closeChatButton">Close Chat</button>
+            <button id="closeChatButton">Close</button>
         </div>
         <div id="messageContainer" class="message-container">
             <!-- Messages will appear here -->
@@ -92,6 +126,7 @@
             <button id="sendChatButton">Send</button>
         </div>
     </div>
+
 
 
     <!-- Firebase SDKs -->
