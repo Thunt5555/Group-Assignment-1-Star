@@ -1,0 +1,93 @@
+/* Chat Section */
+#chatSection {
+    display: none; /* Hidden by default */
+    position: fixed;
+    bottom: 20px; /* Slightly above the bottom of the screen */
+    right: 20px; /* Positioned to the right side */
+    width: 350px; /* Fixed width for the chat window */
+    height: 500px; /* Fixed height for the chat window */
+    background-color: rgba(50, 50, 50, 0.9); /* Slightly transparent dark gray background */
+    color: #fff;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+    z-index: 1000; /* Ensure it's above other elements */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    overflow: hidden; /* Prevent overflowing content */
+}
+
+/* Chat Header */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #333; /* Darker gray for the header */
+    color: #fff;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for separation */
+}
+
+/* Message Container */
+.message-container {
+    flex: 1; /* Take up all available vertical space */
+    overflow-y: auto; /* Enable scrolling for messages */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between messages */
+}
+
+/* Individual Messages */
+.message {
+    max-width: 80%; /* Ensure messages don't stretch too far */
+    word-wrap: break-word;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* Sent Messages */
+.message.sent {
+    align-self: flex-end; /* Align sent messages to the right */
+    background-color: #007bff; /* Blue background for sent messages */
+    color: white;
+    text-align: right;
+}
+
+/* Received Messages */
+.message.received {
+    align-self: flex-start; /* Align received messages to the left */
+    background-color: #444; /* Dark gray for received messages */
+    color: white;
+    text-align: left;
+}
+
+/* Chat Input Section */
+.chat-input-container {
+    display: flex;
+    padding: 10px;
+    background-color: #333; /* Match the header background */
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for separation */
+}
+
+.chat-input-container input {
+    flex: 1; /* Take up all available horizontal space */
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+}
+
+.chat-input-container button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.chat-input-container button:hover {
+    background-color: #0056b3;
+}
