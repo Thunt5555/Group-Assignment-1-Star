@@ -18,6 +18,7 @@ let privateChatUnsubscribe;
 
 // Render a single message
 function renderMessage(messageData, isCurrentUser) {
+    console.log("Rendering message:", messageData); // Log message data
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("message", isCurrentUser ? "sent" : "received");
     const senderName = messageData.senderUsername || "Unknown";
@@ -162,6 +163,7 @@ async function loadPrivateChat(friendUid) {
     });
 }
 
+
 // Send a private message
 async function sendPrivateMessage(friendUid) {
     const privateMessageInput = document.getElementById("privateMessageInput");
@@ -170,6 +172,19 @@ async function sendPrivateMessage(friendUid) {
     if (message === "") return;
 
     const chatId = [auth.currentUser.uid, friendUid].sort().join("_");
+
+    // Show message locally for sender
+    const privateMessagesContainer = document.getElementById("privateMessages");
+    const tempMessage = {
+        senderId: auth.currentUser.uid,
+        senderUsername: auth.currentUser.email.split("@")[0],
+        text: message,
+        timestamp: new Date(), // Temporary timestamp
+    };
+    const messageDiv = renderMessage(tempMessage, true);
+    privateMessagesContainer.appendChild(messageDiv);
+    privateMessagesContainer.scrollTop = privateMessagesContainer.scrollHeight;
+    console.log("Scrolled to bottom");
 
     try {
         await addDoc(collection(db, `privateChats/${chatId}/messages`), {
@@ -184,6 +199,9 @@ async function sendPrivateMessage(friendUid) {
         console.error("Error sending private message:", error);
     }
 }
+
+
+
 
 // ---------------- EVENT LISTENERS -----------------
 
