@@ -130,9 +130,12 @@ async function loadFriendsForPrivateChat() {
 function openPrivateChat(friendUid, friendName) {
     document.getElementById("privateChatFriendList").style.display = "none";
     document.getElementById("privateChatWindow").style.display = "block";
-    document.getElementById("privateChatHeader").textContent = `Chat with ${friendName}`;
+    const privateChatHeader = document.getElementById("privateChatHeader");
+    privateChatHeader.textContent = `Chat with ${friendName}`;
+    privateChatHeader.setAttribute("data-friend-uid", friendUid); // Set friend UID
     loadPrivateChat(friendUid);
 }
+
 
 // Load private chat messages
 async function loadPrivateChat(friendUid) {
@@ -150,6 +153,7 @@ async function loadPrivateChat(friendUid) {
     );
 
     privateChatUnsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+        console.log("Private chat snapshot updated:", snapshot.docs.map(doc => doc.data())); // Log data
         privateMessagesContainer.innerHTML = ""; // Clear old messages
         snapshot.forEach((doc) => {
             const messageData = doc.data();
@@ -157,10 +161,11 @@ async function loadPrivateChat(friendUid) {
             const messageDiv = renderMessage(messageData, isCurrentUser);
             privateMessagesContainer.appendChild(messageDiv);
         });
-
+    
         // Scroll to the bottom of the chat
         privateMessagesContainer.scrollTop = privateMessagesContainer.scrollHeight;
     });
+    
 }
 
 
@@ -247,9 +252,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("sendPrivateMessageButton").addEventListener("click", () => {
-        const friendUid = document.getElementById("privateChatHeader").getAttribute("data-friend-uid");
+        const privateChatHeader = document.getElementById("privateChatHeader");
+        const friendUid = privateChatHeader.getAttribute("data-friend-uid");
+        if (!friendUid) {
+            console.error("Friend UID not found. Unable to send message.");
+            return;
+        }
         sendPrivateMessage(friendUid);
     });
+    
 });
 
 export {
