@@ -3,16 +3,12 @@ import { auth } from './firebase.js';
 import { signIn, signUp, signInGuest, showMainMenu } from './auth.js';
 import { db } from './firebase.js';
 import { ref, set, onChildAdded } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { initializeGameMenu } from "./gameMenu.js";
 
-
-
-function testdbdb(){
-    alert("ran test");
-    console.log("entered here");
-
-}
-document.getElementById("Add ping").addEventListener("click", testdbdb);
-
+// Initialize the game menu functionality when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+    initializeGameMenu();
+});
 
 // Send message function
 function sendMessage(e) {

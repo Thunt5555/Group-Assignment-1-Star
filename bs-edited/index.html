@@ -45,6 +45,7 @@
     <!-- Main Menu -->
     <div id="mainMenu" style="display:none;">
         <h1>Welcome! <br>Bullshit Online Game!</h1>
+        <button id="gameOptionsButton">Game Options</button>
         <button id="friendsButton">Friends</button>
         <button id="buttonAddFriends">Add Friends</button>
         <button id="chatButton">Chat</button>
@@ -127,7 +128,23 @@
         </div>
     </div>
 
+    <!-- Game Options Section -->
+    <div id="gameOptionsSection" style="display: none;">
+        <h2>Game Options</h2>
+        <button id="hostGameButton">Host Game</button>
+        <div>
+        <h3>Join a Game</h3>
+            <input type="text" id="gameIdInput" placeholder="Enter Game ID" />
+            <button id="joinGameButton">Join Game</button>
+        </div>
+        <div>
+            <button id="addBotsButton">Add Bots</button>
+        </div>
+        <button id="backToMainMenuButtonFromGameOptions">Back</button>
+    </div>
 
+
+   
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
@@ -136,6 +153,8 @@
     <script type="module" src="auth.js" defer></script>
     <script type="module" src="friends.js" defer></script>
     <script type="module" src="chat.js" defer></script>
+    <script type="module" src="gameMenu.js" defer></script>
+
 
 
 </body>
