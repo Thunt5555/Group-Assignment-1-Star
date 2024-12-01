@@ -1,4 +1,3 @@
-// Game Menu
 import { hostLobby } from './hostLobby.js';
 import { auth } from './firebase.js';
 
@@ -6,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameOptionsButton = document.getElementById('gameOptionsButton');
     const gameOptionsSection = document.getElementById('gameOptionsSection');
     const mainMenu = document.getElementById('mainMenu');
-    const hostGameSection = document.getElementById('hostGameSection');
+    const hostGameDropdown = document.getElementById('hostGameDropdown');
     const lobbyNameInput = document.getElementById('lobbyNameInput');
     let isPrivate = false; // Default to public
 
-    // Show Game Options
+    // Game Options Button
     if (gameOptionsButton) {
         gameOptionsButton.addEventListener('click', () => {
             mainMenu.style.display = 'none';
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Back Button
+    // Back to Main Menu
     const backButton = document.getElementById('backToMainMenuButtonFromGameOptions');
     if (backButton) {
         backButton.addEventListener('click', () => {
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Host Game Flow
+    // Host Game Button
     const hostGameButton = document.getElementById('hostGameButton');
     const cancelHostLobbyButton = document.getElementById('cancelHostLobbyButton');
     const createLobbyButton = document.getElementById('createLobbyButton');
@@ -36,23 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hostGameButton) {
         hostGameButton.addEventListener('click', () => {
-            console.log('Host Game Button Clicked'); // Debugging message
-            // Transition to the Host Game Section
-            gameOptionsSection.style.display = 'none';
-            if (hostGameSection) {
-                hostGameSection.style.display = 'block';
-                console.log('Host Game Section is now visible.');
-            } else {
-                console.error('Host Game Section element not found!');
-            }
+            // Toggle the Host Game Dropdown
+            const isDropdownVisible = hostGameDropdown.style.display === 'block';
+            hostGameDropdown.style.display = isDropdownVisible ? 'none' : 'block';
         });
     }
 
     if (cancelHostLobbyButton) {
         cancelHostLobbyButton.addEventListener('click', () => {
-            // Return to Game Options Section and Reset Inputs
-            hostGameSection.style.display = 'none';
-            gameOptionsSection.style.display = 'block';
+            hostGameDropdown.style.display = 'none'; // Hide the dropdown
             lobbyNameInput.value = ''; // Reset input
         });
     }
@@ -88,9 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const hostId = currentUser.uid;
             await hostLobby(hostId, lobbyName, isPrivate);
 
-            // Reset the UI and Inputs
-            hostGameSection.style.display = 'none';
-            gameOptionsSection.style.display = 'block';
+            hostGameDropdown.style.display = 'none'; // Hide the dropdown
             lobbyNameInput.value = ''; // Reset input
         });
     }
