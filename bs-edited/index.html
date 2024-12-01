@@ -129,20 +129,40 @@
     </div>
 
     <!-- Game Options Section -->
-    <div id="gameOptionsSection" style="display: none;">
-        <h2>Game Options</h2>
-        <button id="hostGameButton">Host Game</button>
-        <div>
-        <h3>Join a Game</h3>
-            <input type="text" id="gameIdInput" placeholder="Enter Game ID" />
-            <button id="joinGameButton">Join Game</button>
-        </div>
-        <div>
-            <button id="addBotsButton">Add Bots</button>
-        </div>
-        <button id="backToMainMenuButtonFromGameOptions">Back</button>
+<div id="gameOptionsSection" style="display: none;">
+    <h2>Game Options</h2>
+
+    <!-- Host Game Section -->
+    <div id="hostGameSection" style="display: none;">
+        <h3>Create a Lobby</h3>
+        <label for="lobbyNameInput">Lobby Name:</label>
+        <input type="text" id="lobbyNameInput" placeholder="Enter lobby name" />
+
+        <p>Is this a private lobby?</p>
+        <button id="privateLobbyYes" style="background-color: green; color: white;">Yes</button>
+        <button id="privateLobbyNo" style="background-color: red; color: white;">No</button>
+
+        <button id="createLobbyButton">Create Lobby</button>
+        <button id="cancelHostLobbyButton">Cancel</button>
     </div>
 
+    <!-- Host Game -->
+    <div>
+        <h3>Host a Lobby</h3>
+        <button id="hostGameButton">Host Game</button>
+    </div>
+
+    <!-- View Lobbies -->
+    <div>
+        <h3>Available Lobbies</h3>
+        <div id="lobbiesList">
+            <!-- Lobbies will be dynamically listed here -->
+        </div>
+    </div>
+
+    <!-- Back to Main Menu -->
+    <button id="backToMainMenuButtonFromGameOptions">Back</button>
+</div>
 
    
 
