@@ -1,4 +1,5 @@
 import { hostLobby } from './hostLobby.js';
+import { viewLobbies } from './viewLobbies.js';
 import { auth } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameOptionsSection = document.getElementById('gameOptionsSection');
     const mainMenu = document.getElementById('mainMenu');
     const hostGameDropdown = document.getElementById('hostGameDropdown');
+    const lobbiesList = document.getElementById('lobbiesList');
+    const viewLobbiesButton = document.getElementById('viewLobbiesButton');
     const lobbyNameInput = document.getElementById('lobbyNameInput');
     let isPrivate = false; // Default to public
 
@@ -81,6 +84,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
             hostGameDropdown.style.display = 'none'; // Hide the dropdown
             lobbyNameInput.value = ''; // Reset input
+        });
+    }
+
+    // View Lobbies
+    if (viewLobbiesButton) {
+        viewLobbiesButton.addEventListener('click', async () => {
+            const lobbies = await viewLobbies(); // Fetch lobbies from Firestore
+            lobbiesList.innerHTML = ''; // Clear previous list
+
+            if (lobbies.length === 0) {
+                lobbiesList.innerHTML = '<p>No lobbies available.</p>';
+                return;
+            }
+
+            // Display each lobby
+            lobbies.forEach((lobby) => {
+                const lobbyItem = document.createElement('div');
+                lobbyItem.classList.add('lobby-item');
+                lobbyItem.innerHTML = `
+                    <p><strong>${lobby.name}</strong> (Host: ${lobby.hostId})</p>
+                    <p>Players: ${lobby.playerCount}/${lobby.maxPlayers}</p>
+                    <button class="joinLobbyButton" data-lobby-id="${lobby.id}">Join Lobby</button>
+                `;
+                lobbiesList.appendChild(lobbyItem);
+            });
+
+            // Add event listeners to join buttons
+            document.querySelectorAll('.joinLobbyButton').forEach((button) => {
+                button.addEventListener('click', (e) => {
+                    const lobbyId = e.target.dataset.lobbyId;
+                    alert(`Joining lobby: ${lobbyId}`); // Handle joining logic here
+                });
+            });
         });
     }
 });
