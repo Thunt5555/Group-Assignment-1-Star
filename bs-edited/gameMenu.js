@@ -87,13 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // View Lobbies
+    // View Lobbies Button
     if (viewLobbiesButton) {
         viewLobbiesButton.addEventListener('click', async () => {
             const lobbies = await viewLobbies(); // Fetch lobbies from Firestore
             lobbiesList.innerHTML = ''; // Clear previous list
 
-            if (lobbies.length === 0) {
+            viewLobbiesButton.style.display = 'none'; // Hide "View Lobbies" button
+            exitLobbiesButton.style.display = 'block'; // Show "Exit Lobbies" button
+
+            if (!lobbies || lobbies.length === 0) {
                 lobbiesList.innerHTML = '<p>No lobbies available.</p>';
                 return;
             }
@@ -105,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lobbyItem.innerHTML = `
                     <p><strong>${lobby.name}</strong> (Host: ${lobby.hostId})</p>
                     <p>Players: ${lobby.playerCount}/${lobby.maxPlayers}</p>
-                    <button class="joinLobbyButton" data-lobby-id="${lobby.id}">Join Lobby</button>
+                    <button class="joinLobbyButton" data-lobby-id="${lobby.id}" style="background-color: green; color: white;">Join Lobby</button>
                 `;
                 lobbiesList.appendChild(lobbyItem);
             });
@@ -119,4 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Exit Lobbies Button
+    if (exitLobbiesButton) {
+        exitLobbiesButton.addEventListener('click', () => {
+            lobbiesList.innerHTML = ''; // Clear the lobbies list
+            exitLobbiesButton.style.display = 'none'; // Hide "Exit Lobbies" button
+            viewLobbiesButton.style.display = 'block'; // Show "View Lobbies" button
+        });
+    }
+
 });
